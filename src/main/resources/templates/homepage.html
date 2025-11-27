@@ -4,13 +4,13 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{page_layout/layout}">
 
-<head>
+<header layout:fragment="header">
   <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
-<div layout:fragment="main-content">
-  <h1>This is Index Page!</h1>
-</div>
-</body>
+  <title>Home Page</title>
+</header>
+
+<section layout:fragment="main-content">
+  <h1>This Is The Home Of Street Food Go!</h1>
+</section>
 </html>
+

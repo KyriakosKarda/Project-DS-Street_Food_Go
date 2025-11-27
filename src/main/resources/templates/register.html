@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+<header layout:fragment="header">
+    <meta charset="UTF-8">
+    <title>Register Page</title>
+</header>
+
+<section layout:fragment="main-content">
+  <form th:action="@{/login}" method="GET">
+    <div class="form-group">
+      <label for="type"></label>
+      <select id="type" name="type" class="form-control">
+        <option disabled selected >---Choose Me---</option>
+        <option value="OWNER">OWNER</option>
+        <option value="CUSTOMER">CUSTOMER</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <input type="text" id="firstName" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+      <input type="text" id="lastName" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Cell-Phone</label>
+      <input type="text" id="phone" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="address">address</label>
+      <input type="text" id="address" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" class="form-control">
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</section>
+</html>
