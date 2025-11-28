@@ -3,55 +3,51 @@ package SFG.Street_Food_Go.Entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
+import java.util.List;
+
 @Entity
-@Table(name = "restaurants", uniqueConstraints = {}, indexes = {})
 public class Restaurant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // IDENTITY - Kalutero gia postgreSQL database.
-    private long restId; // auto-generated.
+    @Column
+    private Long restId; // auto-generated.
 
-    @Column(name = "restaurant_name", length = 255)
-    @Size(max = 255)
+    @Column
     private String restName;
 
-    @Column(name = "restaurant_address", length = 255)
-    @Size(max = 255)
+    @Column()
     private String restAddress;
 
-    @Column(name = "restaurant_region", length = 255)
-    @Size(max = 255)
+    @Column()
     private String restRegion;
 
-    @Column(name = "restaurant_stars")
-    private float restStars;
+    @Column()
+    private double restStars;
 
-    @OneToOne // Ena estatorio exei ena menu.
-    @JoinColumn(name = "menu_id")
-    private Menu restMenu;
 
-    @OneToOne
-    @JoinColumn(name = "owner_id")
-    private Person restOwner;
+    @OneToMany(mappedBy = "restaurant",cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<Product> allProducts;
+
+
 
     public Restaurant() {}
 
-    public Restaurant(Long restId, String restName, String restAddress,
-                      String restRegion, float restStars, Menu restMenu, Person restOwner) {
+    public Restaurant(Long restId, String restName, String restAddress, String restRegion, double restStars) {
         this.restId = restId;
         this.restName = restName;
         this.restAddress = restAddress;
         this.restRegion = restRegion;
         this.restStars = restStars;
-        this.restMenu = restMenu;
-        this.restOwner = restOwner;
     }
 
-    public long getRestId() {
+
+
+    public Long getRestId() {
         return restId;
     }
 
-    public void setRestId(long restId) {
+    public void setRestId(Long restId) {
         this.restId = restId;
     }
 
@@ -79,28 +75,20 @@ public class Restaurant {
         this.restRegion = restRegion;
     }
 
-    public float getRestStars() {
+    public double getRestStars() {
         return restStars;
     }
 
-    public void setRestStars(float restStars) {
+    public void setRestStars(double restStars) {
         this.restStars = restStars;
     }
 
-    public Menu getRestMenu() {
-        return restMenu;
+    public List<Product> getAllProducts() {
+        return allProducts;
     }
 
-    public void setRestMenu(Menu restMenu) {
-        this.restMenu = restMenu;
-    }
-
-    public Person getRestOwner() {
-        return restOwner;
-    }
-
-    public void setRestOwner(Person restOwner) {
-        this.restOwner = restOwner;
+    public void setAllProducts(List<Product> allProducts) {
+        this.allProducts = allProducts;
     }
 
     @Override
@@ -111,8 +99,6 @@ public class Restaurant {
                 ", restAddress='" + restAddress + '\'' +
                 ", restRegion='" + restRegion + '\'' +
                 ", restStars=" + restStars +
-                ", restMenu=" + restMenu +
-                ", restOwner=" + restOwner +
                 '}';
     }
 }

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+<header>
+    <meta charset="UTF-8">
+    <title>menu</title>
+</header>
+<section layout:fragment="main-content">
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Belongs To rest: </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.id}"></td>
+            <td th:text="${product.getName()}"></td>
+            <td th:text="${product.getDescription()}"></td>
+            <td th:text="${product.getPrice()}"></td>
+            <td th:text="${product.getRestaurant().getRestName()}"></td>
+        </tr>
+    </tbody>
+</table>
+
+</section>
+</html>

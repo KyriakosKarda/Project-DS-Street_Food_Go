@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+<head layout:fragment="head">
+    <meta charset="UTF-8">
+    <title>Restaurants</title>
+</head>
+<section layout:fragment="main-content">
+    <br>
+    <div class="container-fluid"><h1>All The Available Restaurants</h1></div>
+    <br>
+    <table class="table">
+        <thead>
+        <tr>
+            <th># restId</th>
+            <th>Restaurant Name</th>
+            <th>Address</th>
+            <th>Region</th>
+            <th>Stars</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="res : ${res}">
+            <td th:text="${res.getRestId()}"></td>
+            <td th:text="${res.getRestName()}"></td>
+            <td th:text="${res.getRestAddress()}"></td>
+            <td th:text="${res.getRestRegion()}"></td>
+            <td th:text="${res.getRestStars()} + ' ★'"></td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</html>
