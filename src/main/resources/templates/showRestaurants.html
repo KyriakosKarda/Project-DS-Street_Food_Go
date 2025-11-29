@@ -23,11 +23,13 @@
         </thead>
         <tbody>
         <tr th:each="res : ${res}">
-            <td th:text="${res.getRestId()}"></td>
-            <td th:text="${res.getRestName()}"></td>
-            <td th:text="${res.getRestAddress()}"></td>
-            <td th:text="${res.getRestRegion()}"></td>
-            <td th:text="${res.getRestStars()} + ' ★'"></td>
+            <div th:if="${res.isOpen()} ">
+                <td th:text="${res.getRestId()}"></td>
+                <td th:text="${res.getRestName()}"></td>
+                <td th:text="${res.getRestAddress()}"></td>
+                <td th:text="${res.getRestRegion()}"></td>
+                <td th:text="${res.getRestStars()} + ' ★'"></td>
+            </div>
         </tr>
         </tbody>
     </table>

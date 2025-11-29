@@ -4,6 +4,8 @@ package SFG.Street_Food_Go.Entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
+import java.util.List;
+
 @Entity
 public class Product {
     @Id
@@ -23,6 +25,9 @@ public class Product {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "Id_res_fk")
     private Restaurant restaurant;
+
+    @OneToMany(mappedBy = "product")
+    private List<OrderPlacement> order_placement;
 
 
 

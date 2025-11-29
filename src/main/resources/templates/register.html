@@ -9,44 +9,44 @@
 </header>
 
 <section layout:fragment="main-content">
-  <form th:action="@{/login}" method="GET">
+  <form th:action="@{/register}" method="POST" th:object="${person}">
     <div class="form-group">
       <label for="type"></label>
-      <select id="type" name="type" class="form-control">
-        <option disabled selected >---Choose Me---</option>
-        <option value="OWNER">OWNER</option>
-        <option value="CUSTOMER">CUSTOMER</option>
+      <select id="type" name="type" class="form-control" th:field="*{personType}">
+        <option disabled selected value="">--- Choose Me ---</option>
+        <option th:value="'OWNER'">OWNER</option>
+        <option th:value="'CUSTOMER'">CUSTOMER</option>
       </select>
     </div>
 
     <div class="form-group">
       <label for="firstName">First Name</label>
-      <input type="text" id="firstName" class="form-control">
+      <input type="text" id="firstName" class="form-control" th:field="*{name}">
     </div>
 
     <div class="form-group">
       <label for="lastName">Last Name</label>
-      <input type="text" id="lastName" class="form-control">
+      <input type="text" id="lastName" class="form-control" th:field="*{surname}">
     </div>
 
     <div class="form-group">
       <label for="email">Email</label>
-      <input type="email" id="email" class="form-control">
+      <input type="email" id="email" class="form-control" th:field="*{emailAddress}">
     </div>
 
     <div class="form-group">
       <label for="phone">Cell-Phone</label>
-      <input type="text" id="phone" class="form-control">
+      <input type="text" id="phone" class="form-control" th:field="*{phoneNumber}">
     </div>
 
     <div class="form-group">
       <label for="address">address</label>
-      <input type="text" id="address" class="form-control">
+      <input type="text" id="address" class="form-control" th:field="*{address}">
     </div>
 
     <div class="form-group">
       <label for="password">Password</label>
-      <input type="password" id="password" class="form-control">
+      <input type="password" id="password" class="form-control" th:field="*{passwordHash}">
     </div>
 
 

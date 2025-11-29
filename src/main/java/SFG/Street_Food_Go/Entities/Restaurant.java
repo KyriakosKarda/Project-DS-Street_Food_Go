@@ -25,20 +25,30 @@ public class Restaurant {
     @Column()
     private double restStars;
 
+    @Column()
+    private boolean isOpen;
+
 
     @OneToMany(mappedBy = "restaurant",cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Product> allProducts;
 
+    @OneToMany(mappedBy = "restaurant")
+    private List<OrderRequest> order_from_specific_rest;
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private Person owner;
 
 
     public Restaurant() {}
 
-    public Restaurant(Long restId, String restName, String restAddress, String restRegion, double restStars) {
+    public Restaurant(Long restId, String restName, String restAddress, String restRegion, double restStars,boolean isOpen) {
         this.restId = restId;
         this.restName = restName;
         this.restAddress = restAddress;
         this.restRegion = restRegion;
         this.restStars = restStars;
+        this.isOpen = isOpen;
     }
 
 
@@ -89,6 +99,21 @@ public class Restaurant {
 
     public void setAllProducts(List<Product> allProducts) {
         this.allProducts = allProducts;
+    }
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public void setOpen(boolean open) {
+        isOpen = open;
+    }
+
+    public Person getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Person owner) {
+        this.owner = owner;
     }
 
     @Override
