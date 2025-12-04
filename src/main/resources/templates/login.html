@@ -10,6 +10,7 @@
 </head>
 <section layout:fragment="main-content">
     <form th:action="@{/login}" method="POST" th:object="${person}">
+        <h1>Login Page</h1>
         <div class="form-group">
             <label for="username">Username</label>
             <input type="text" id="username" class="form-control" th:field="*{name}">

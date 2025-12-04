@@ -13,6 +13,7 @@ public class RestaurantController {
 
         private RestaurantService restaurantService;
         public RestaurantController(RestaurantServiceImp restaurantService) {this.restaurantService = restaurantService;}
+
         @GetMapping()
         public String restaurants(Model model){
             model.addAttribute("res",restaurantService.getRestaurants());

@@ -5,25 +5,39 @@
       layout:decorate="~{page_layout/layout}">
 <header layout:fragment="header">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Product</title>
 </header>
 <body>
 <section layout:fragment="main-content">
-    <form th:action="@{/new}" th:object="${p1}" method="POST">
-
+    <form th:action="@{/product/new}" th:object="${p1}" method="POST">
+        <h1>Add A New Product</h1>
         <div class="form-group">
             <label for="firstName">First Name</label>
-            <input type="text" id="firstName" th:field="*{name}" class="form-control">
+            <input type="text" id="firstName" th:field="*{name}" class="form-control" required>
         </div>
 
         <div class="form-group">
             <label for="description">description</label>
-            <input type="text" id="description" class="form-control" th:field="*{description}" >
+            <input type="text" id="description" class="form-control" th:field="*{description}"  required>
         </div>
 
         <div class="form-group">
             <label for="price">price</label>
-            <input type="text" id="price" class="form-control" th:field="*{price}" >
+            <input type="number" id="price" class="form-control" th:field="*{price}"  required>
+        </div>
+
+        <div class="form-group">
+            <label for="type">Available-Restaurant</label>
+            <select id="type" name="restaurant" class="form-control" required>
+                <option disabled selected value="">--- Choose From Available Restaurant ---</option>
+                <option th:each="rest : ${restaurants}"
+                        th:value="${rest.getRestId()}"
+                        th:text="${rest.restName}">
+                </option>
+            </select>
+        </div>
+        <div class="form-group" th:if="${error != null}">
+            <p style="color: red" th:text="${error}"></p>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

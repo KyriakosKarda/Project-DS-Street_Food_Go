@@ -44,6 +44,7 @@ body {
 
 .cover-container {
     max-width: 42em;
+    width: 100%;
 }
 
 
@@ -52,7 +53,8 @@ body {
  */
 .masthead {
     margin-bottom: 2rem;
-}
+    width: 100%;
+    overflow: hidden;}
 
 .masthead-brand {
     margin-bottom: 0;
@@ -69,6 +71,16 @@ body {
 .nav-masthead .nav-link:hover,
 .nav-masthead .nav-link:focus {
     border-bottom-color: rgba(255, 255, 255, .25);
+}
+
+td {
+     white-space: nowrap;
+     vertical-align: middle;
+}
+
+.table th {
+    white-space: nowrap;
+    vertical-align: middle;
 }
 
 .nav-masthead .nav-link + .nav-link {

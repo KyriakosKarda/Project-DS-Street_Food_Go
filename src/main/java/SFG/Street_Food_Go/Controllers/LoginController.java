@@ -29,7 +29,7 @@ public class LoginController {
 
         if(exists){
             System.out.println("Person Exists "+ person.getName() + " "+ person.getPasswordHash());
-            return "register";
+            return "redirect:/restaurants";
         }
         System.out.println("Person Not Exists ");
         model.addAttribute("error","?error");

@@ -14,21 +14,25 @@
     <table class="table">
         <thead>
         <tr>
-            <th># restId</th>
-            <th>Restaurant Name</th>
+            <th>Actions</th>
+            <th>Name</th>
             <th>Address</th>
             <th>Region</th>
+            <th>Owner's name</th>
             <th>Stars</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="res : ${res}">
             <div th:if="${res.isOpen()} ">
-                <td th:text="${res.getRestId()}"></td>
+<!--                <td th:text="${res.getRestName()}"></td>-->
+                <td> <a class="btn btn-outline-light btn-sm" th:href="@{'/menu/' + ${res.getRestId()}}">Show Menu</a></td>
                 <td th:text="${res.getRestName()}"></td>
                 <td th:text="${res.getRestAddress()}"></td>
                 <td th:text="${res.getRestRegion()}"></td>
-                <td th:text="${res.getRestStars()} + ' ★'"></td>
+                <td th:text="${res.getOwner().getName()}"></td>
+                <td th:text="${res.getRestStars()} + ' ⭐'"></td>
+                <!---To add the name of the owner--->
             </div>
         </tr>
         </tbody>

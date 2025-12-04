@@ -4,6 +4,7 @@ import SFG.Street_Food_Go.Entities.Person;
 import SFG.Street_Food_Go.Entities.PersonType;
 import SFG.Street_Food_Go.Repository.PersonRepository;
 import SFG.Street_Food_Go.Services.PersonService;
+import SFG.Street_Food_Go.Services.models.PersonResult;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,9 +31,47 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Person createPerson(Person person) {
+    public PersonResult createPerson(Person person) {
 
+        /*
+          Check If The user Provided street NO in his address
+         */
+        String givenAddress = person.getAddress();
+        if(!isValidAddress(givenAddress)){
+            return new PersonResult(false, "Address[ '"+  givenAddress+ "' ] "+ "is not valid. You Should Add Both Name and Number Of The Address");
+        }
 
-        return personRepository.save(person);
+        /*
+        We Have to Convert Plain Text Password To Encrypted one
+         */
+        /*
+        Here Also to add the push notific after person saved
+         */
+        Person personSaved = personRepository.save(person);
+        if (personSaved != null) {
+            return new PersonResult(true, null);
+        }
+        return new PersonResult(false, "Unexpected Error");
+    }
+    //
+    private boolean isValidAddress(String address){
+        // koita gia to andress an exei noumera kai grammata
+        // business logic
+        if(address == null || address.isBlank()){
+            return false;
+        }
+        boolean hasNumbers = false;
+        boolean hasLetters = false;
+        for(int i = 0; i < address.length(); i++){
+            char ch = address.charAt(i);
+            if(Character.isDigit(ch)){
+                hasNumbers = true;
+            }
+            if(Character.isLetter(ch)){
+                hasLetters = true;
+            }
+        }
+        System.out.println(hasNumbers + " " + hasLetters);
+        return hasNumbers && hasLetters;
     }
 }

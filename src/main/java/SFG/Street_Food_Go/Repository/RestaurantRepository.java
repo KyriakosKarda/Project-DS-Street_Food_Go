@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface RestaurantRepository extends JpaRepository<Restaurant, Integer> {
 
 
+    Restaurant getRestaurantByRestId(Long restId);
 }

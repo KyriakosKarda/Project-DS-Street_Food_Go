@@ -9,4 +9,6 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
 
 
     Product getProductsByName(String name);
+
+    Product getProductById(Integer id);
 }

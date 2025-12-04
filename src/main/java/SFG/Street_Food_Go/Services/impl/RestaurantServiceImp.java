@@ -29,4 +29,9 @@ public class RestaurantServiceImp implements RestaurantService {
         /// TODO REMOVE NULL
         return null;
     }
+
+    @Override
+    public Restaurant getRestaurantById(Long id) {
+        return restaurantRepository.getRestaurantByRestId(id);
+    }
 }

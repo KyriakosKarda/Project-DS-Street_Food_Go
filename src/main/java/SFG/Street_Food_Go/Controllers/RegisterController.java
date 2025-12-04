@@ -3,6 +3,7 @@ package SFG.Street_Food_Go.Controllers;
 import SFG.Street_Food_Go.Entities.Person;
 import SFG.Street_Food_Go.Entities.Restaurant;
 import SFG.Street_Food_Go.Services.PersonService;
+import SFG.Street_Food_Go.Services.models.PersonResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +23,13 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String handleRegistrationForm(@ModelAttribute Person person){
-        Person returned_person = personService.createPerson(person);
-        return "login";
+    public String handleRegistrationForm(@ModelAttribute Person person, Model model){
+        PersonResult returned_person = personService.createPerson(person);
+        if(returned_person.isCreated()){
+            return "redirect:/restaurants";
+        }
+        model.addAttribute("person", person);
+        model.addAttribute("error", returned_person.getErrorMessage());
+        return "register";
     }
 }
