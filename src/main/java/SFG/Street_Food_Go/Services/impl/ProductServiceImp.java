@@ -39,6 +39,12 @@ public class ProductServiceImp implements ProductService {
         return productRepository.getProductById(id);
     }
 
+    @Override
+    public List<Product> findByRestaurant_Id(Long restaurantId) {
+        return productRepository.findByRestaurant_Id(restaurantId);
+    }
+
+
     private ProductResult isPriceValid(String price) {
         try {
             double p = Double.parseDouble(price);

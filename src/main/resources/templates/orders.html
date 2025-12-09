@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders</title>
+</head>
+<section layout:fragment="main-content">
+    <h1>All The Orders</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th># Order Id</th>
+                <th>Name Of The Restaurant</th>
+                <th>Status Of The Order</th>
+                <th>Date Issued</th>
+                <th>Full Name Of The Customer</th>
+                <th>Address</th>
+                <th>List of Products</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orderRequests}">
+            <td th:text="${order.getOrder_id()}"></td>
+            <td th:text="${order.getRestaurant().getRestName()}"></td>
+            <td th:text="${order.getOrderStatus()}"></td>
+            <td th:if="${!#lists.isEmpty(order.getOrderStatus())}"
+              th:text="${order.order_placement[0].getOrder_Created_Time()}">
+            </td>
+            <td th:text="${order.getPerson_order().getName() + ' ' + order.getPerson_order().getSurname()}"></td>
+            <td th:text="${order.getPerson_order().getAddress()}"></td>
+            <td>
+                <ol>
+                    <li th:each="op : ${order.order_placement}">
+                        <span th:text="${op.getQuantity()}"></span>X
+                        <span th:text="${op.getProduct().getName()}"></span>
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+</section>
+</html>

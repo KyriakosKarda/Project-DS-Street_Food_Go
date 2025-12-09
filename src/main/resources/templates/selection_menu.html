@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+</head>
+<section layout:fragment="main-content">
+<form th:action="@{'/menu/'+ ${rest_id}+'/cart'}" method="POST" th:object="${OrderDTO}">
+    <table class="table">
+        <div class="container-fluid"><h1>Catalog of Foods</h1></div>
+        <thead>
+        <tr>
+            <th>Select Product</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Belongs To rest: </th>
+            <th>Quantity</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="menuItem, i : ${products}">
+            <td>
+                <input type="checkbox" th:field="*{selections[__${i.index}__].selected}">
+                <input type="hidden" th:field="*{selections[__${i.index}__].productId}">
+            </td>
+            <td th:text="${menuItem.getName()}"></td>
+            <td th:text="${menuItem.getDescription()}"></td>
+            <td th:text="${menuItem.getPrice()} + ' €'"></td>
+            <td th:text="${menuItem.getRestaurant().getRestName()}"></td>
+            <td><input type="number" min="0" max="10" th:field="*{selections[__${i.index}__].quantity}"></td>
+        </tr>
+        </tbody>
+
+    </table>
+    <button type="submit" class="btn btn-primary">Add To Cart</button>
+</form>
+</section>
+</html>

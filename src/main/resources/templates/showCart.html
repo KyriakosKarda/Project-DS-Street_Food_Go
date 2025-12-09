@@ -8,26 +8,26 @@
     <title>Menu</title>
 </header>
 <section layout:fragment="main-content">
-<form th:action="@{/menu}" th:object="${menu}" method="post"></form>
+    <form th:action="@{/menu}" th:object="${menu}" method="post"></form>
     <table class="table">
         <div class="container-fluid"><h1>Catalog of Foods</h1></div>
         <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Belongs To rest: </th>
-                <th>Quantity</th>
-            </tr>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Belongs To rest: </th>
+            <th>Quantity</th>
+        </tr>
         </thead>
         <tbody>
-            <tr th:each="menuItem : ${products}">
-                <td th:text="${menuItem.name}"></td>
-                <td th:text="${menuItem.description}"></td>
-                <td th:text="${menuItem.price} + ' €'"></td>
-                <td th:text="${menuItem.getRestaurant().getRestName()}"></td>
-                <td><input type="number" id="price" min="0" required></td>
-            </tr>
+        <tr th:each="menuItem : ${products}">
+            <td th:text="${menuItem.name}"></td>
+            <td th:text="${menuItem.description}"></td>
+            <td th:text="${menuItem.price} + ' €'"></td>
+            <td th:text="${menuItem.getRestaurant().getRestName()}"></td>
+            <td><input type="number" id="price" min="0" required></td>
+        </tr>
         </tbody>
 
     </table>

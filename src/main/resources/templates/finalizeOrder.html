@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Finalize Order</title>
+</head>
+<section layout:fragment="main-content">
+    <table class="table">
+        <div class="container-fluid"><h1>Summary Of The Order</h1></div>
+        <thead>
+            <tr>
+                <th># </th>
+                <th>Product Name</th>
+                <th>Product Quantity</th>
+                <th>Product Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="item, i : ${orderView}">
+                <td th:text="${i.count}"></td>
+                <td th:text="${item.getName()}"></td>
+                <td th:text="${item.getQuantity()}"></td>
+                <td th:text="${item.getPrice()}+ '€'"></td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="button" disabled class="btn btn-primary">Total Cost: <span th:text="${total_price}+ ' €'"></span></button>
+</section>
+</html>

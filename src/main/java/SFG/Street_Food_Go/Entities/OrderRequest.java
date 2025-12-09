@@ -16,8 +16,6 @@ public class OrderRequest {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    @Column
-    private Instant createdAt;
 
     @ManyToOne
     @JoinColumn(name = "rest_id_fk")
@@ -30,12 +28,11 @@ public class OrderRequest {
     @OneToMany(mappedBy = "order_request")
     private List<OrderPlacement> order_placement;
 
-    public OrderRequest() {this.createdAt = Instant.now();}
+    public OrderRequest() {}
 
     public OrderRequest(OrderStatus orderStatus, Long order_id) {
         this.orderStatus = orderStatus;
         this.order_id = order_id;
-        this.createdAt = Instant.now();
     }
 
     public Long getOrder_id() {

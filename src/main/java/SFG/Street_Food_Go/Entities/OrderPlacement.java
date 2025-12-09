@@ -2,6 +2,8 @@ package SFG.Street_Food_Go.Entities;
 
 import jakarta.persistence.*;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 //
@@ -19,7 +21,8 @@ public class OrderPlacement {
     @Column
     private int quantity;
 
-
+    @Column
+    private LocalDate order_Created_Time;
 
     @ManyToOne()
     @JoinColumn(name = "order_Id_fk")
@@ -29,21 +32,12 @@ public class OrderPlacement {
     @JoinColumn(name = "productId_fk")
     private Product product;
 
-    public OrderPlacement() {}
+    public OrderPlacement() {this.order_Created_Time = LocalDate.now();}
 
     public OrderPlacement(int quantity, Long id) {
         this.quantity = quantity;
         this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return "OrderPlacement{" +
-                "id=" + id +
-                ", quantity=" + quantity +
-                ", order_request=" + order_request +
-                ", product=" + product +
-                '}';
+        this.order_Created_Time = LocalDate.now();;
     }
 
     public Long getId() {
@@ -77,32 +71,22 @@ public class OrderPlacement {
     public void setProduct(Product product) {
         this.product = product;
     }
+
+    public LocalDate getOrder_Created_Time() {
+        return order_Created_Time;
+    }
+
+    public void setOrder_Created_Time(LocalDate order_Created_Time) {
+        this.order_Created_Time = order_Created_Time;
+    }
+    @Override
+    public String toString() {
+        return "OrderPlacement{" +
+                "id=" + id +
+                ", quantity=" + quantity +
+                ", order_Created_Time=" + order_Created_Time +
+                ", order_request=" + order_request +
+                ", product=" + product +
+                '}';
+    }
 }
-//
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private long id;
-//
-//
-//    @ManyToOne
-//    @JoinColumn(name = "product_id")
-//    private Product product;
-//
-//    // Σε ποια παραγγελία ανήκει
-//    @ManyToOne
-//    @JoinColumn(name = "order_id")
-//    private Order order;
-//
-//    // Πόσα κομμάτια από αυτό το προϊόν
-//    private int quantity;
-//
-//    public OrderPlacement() {}
-//
-//    public OrderPlacement(Product product, Order order, int quantity) {
-//        this.product = product;
-//        this.order = order;
-//        this.quantity = quantity;
-//    }
-//
-//    // getters + setters
-//}

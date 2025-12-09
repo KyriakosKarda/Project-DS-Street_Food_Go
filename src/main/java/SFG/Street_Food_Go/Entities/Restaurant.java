@@ -11,7 +11,7 @@ public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // IDENTITY - Kalutero gia postgreSQL database.
     @Column
-    private Long restId; // auto-generated.
+    private Long id; // auto-generated.
 
     @Column
     private String restName;
@@ -43,7 +43,7 @@ public class Restaurant {
     public Restaurant() {}
 
     public Restaurant(Long restId, String restName, String restAddress, String restRegion, double restStars,boolean isOpen) {
-        this.restId = restId;
+        this.id = restId;
         this.restName = restName;
         this.restAddress = restAddress;
         this.restRegion = restRegion;
@@ -54,11 +54,11 @@ public class Restaurant {
 
 
     public Long getRestId() {
-        return restId;
+        return id;
     }
 
     public void setRestId(Long restId) {
-        this.restId = restId;
+        this.id = restId;
     }
 
     public String getRestName() {
@@ -119,7 +119,7 @@ public class Restaurant {
     @Override
     public String toString() {
         return "Restaurant{" +
-                "restId=" + restId +
+                "restId=" + id +
                 ", restName='" + restName + '\'' +
                 ", restAddress='" + restAddress + '\'' +
                 ", restRegion='" + restRegion + '\'' +

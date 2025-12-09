@@ -32,6 +32,6 @@ public class RestaurantServiceImp implements RestaurantService {
 
     @Override
     public Restaurant getRestaurantById(Long id) {
-        return restaurantRepository.getRestaurantByRestId(id);
+        return restaurantRepository.getRestaurantById(id);
     }
 }
