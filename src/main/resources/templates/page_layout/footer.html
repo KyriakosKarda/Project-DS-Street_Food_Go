@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -8,10 +9,12 @@
 
 <footer class="mastfoot mt-auto" th:fragment="header">
   <div class="inner">
-    <p>Cover template for <a href="https://getbootstrap.com/">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
     <p>Authors:
       <p><a href="https://github.com/KyriakosKarda/Project-DS-Street_Food_Go" target="_blank">@Kyriakos Kardabikis @Angelliki Vasili @Spyridon Xenos</a></p>
-
+      <div sec:authorize="isAuthenticated()">
+          <small>User: <span sec:authentication="name"></span></small><br>
+          <small>Role: <span sec:authentication="principal.authorities"></span></small>
+      </div>
   </div>
 </footer>
 </body>

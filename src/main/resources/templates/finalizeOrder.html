@@ -8,25 +8,41 @@
     <title>Finalize Order</title>
 </head>
 <section layout:fragment="main-content">
-    <table class="table">
-        <div class="container-fluid"><h1>Summary Of The Order</h1></div>
-        <thead>
-            <tr>
-                <th># </th>
-                <th>Product Name</th>
-                <th>Product Quantity</th>
-                <th>Product Price</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="item, i : ${orderView}">
-                <td th:text="${i.count}"></td>
-                <td th:text="${item.getName()}"></td>
-                <td th:text="${item.getQuantity()}"></td>
-                <td th:text="${item.getPrice()}+ '€'"></td>
-            </tr>
-        </tbody>
-    </table>
-    <button type="button" disabled class="btn btn-primary">Total Cost: <span th:text="${total_price}+ ' €'"></span></button>
+    <form th:action="@{'/viewOrder/'+ ${rest_id}}" method="POST" th:object="${products}">
+        <table class="table">
+            <div class="container-fluid"><h1>Summary Of The Order</h1></div>
+            <thead>
+                <tr>
+                    <th># </th>
+                    <th>Product Name</th>
+                    <th>Product Quantity</th>
+                    <th>Product Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item, i : ${orderView}">
+                    <td th:text="${i.count}"></td>
+                    <td th:text="${item.getName()}"></td>
+                    <td th:text="${item.getQuantity()}"></td>
+                    <td th:text="${item.getPrice()}+ '€'"></td>
+
+                    <input type="hidden" th:field="*{products[__${i.index}__].productId}"/>
+                    <input type="hidden" th:field="*{products[__${i.index}__].name}"/>
+                    <input type="hidden" th:field="*{products[__${i.index}__].price}"/>
+                    <input type="hidden" th:field="*{products[__${i.index}__].quantity}"/>
+                </tr>
+            </tbody>
+        </table>
+        <!-- For Comparisons syntax => https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html -->
+        <div th:if="${total_price} ge 8">
+            <button type="button" disabled class="btn btn-primary">Total Cost: <strong><i><span th:text="${total_price}+ ' €'"></span></i></strong></button>
+            <button type="submit" class="btn btn-primary">Sent Order!!</button>
+        </div>
+        <div th:if="${total_price} lt 8">
+            <button type="button" disabled class="btn btn-primary">Total Cost: <strong><i><span th:text="${total_price}+ ' €'"></span></i></strong></button>
+            <button type="submit" disabled class="btn btn-primary">Minimum Total price is 8€. You need <strong><i><span th:text="${8 - total_price}+ ' €'"></span></i></strong></button>
+        </div>
+
+    </form>
 </section>
 </html>

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
 
@@ -10,12 +11,22 @@
 
 <header class="masthead mb-auto" th:fragment="header">
     <div class="inner">
-        <h3 class="masthead-brand" style="color: red">Street Food Go</h3>
+        <h4 class="masthead-brand" style="color: red">Street Food Go</h4>
         <nav class="nav nav-masthead justify-content-center">
             <a class="nav-link active" href="/">Home</a>
             <a class="nav-link active" href="/restaurants">Available Restaurants</a>
-            <a class="nav-link active" href="/login">Login</a>
-            <a class="nav-link active" href="/register">Register</a>
+            <a sec:authorize="!isAuthenticated()" class="nav-link active" href="/login">Login</a>
+            <a sec:authorize="!isAuthenticated()" class="nav-link active" href="/register">Register</a>
+
+            <a sec:authorize="isAuthenticated()" class="nav-link">
+                    <form th:action="@{/logout}" method="POST">
+                        <input type="submit" class="btn btn-primary" value="Sign Out">
+                    </form>
+            </a>
+
+
+
+
         </nav>
     </div>
 </header>

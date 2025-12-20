@@ -11,4 +11,6 @@ public interface PersonService {
     List<Person> getAllPersons();
     PersonResult createPerson(Person person);
     boolean personExists(Person person);
+
+    Person getPersonById(Long id);
 }

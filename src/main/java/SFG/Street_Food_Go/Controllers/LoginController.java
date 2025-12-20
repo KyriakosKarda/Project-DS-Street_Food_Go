@@ -22,18 +22,18 @@ public class LoginController {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String handleLoginForm(@ModelAttribute Person person,Model model){
-        boolean exists = personService.personExists(person);
-        System.out.println(exists);
-
-        if(exists){
-            System.out.println("Person Exists "+ person.getName() + " "+ person.getPasswordHash());
-            return "redirect:/restaurants";
-        }
-        System.out.println("Person Not Exists ");
-        model.addAttribute("error","?error");
-        return "login";
-
-    }
+//    @PostMapping("/login")
+//    public String handleLoginForm(@ModelAttribute Person person,Model model){
+//        boolean exists = personService.personExists(person);
+//        System.out.println(exists);
+//
+//        if(exists){
+//            System.out.println("Person Exists "+ person.getName() + " "+ person.getPasswordHash());
+//            return "redirect:/restaurants";
+//        }
+//        System.out.println("Person Not Exists ");
+//        model.addAttribute("error","?error");
+//        return "login";
+//
+//    }
 }

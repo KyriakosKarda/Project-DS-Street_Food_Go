@@ -9,5 +9,8 @@ public interface PersonRepository extends JpaRepository<Person,Long> {
     boolean existsByName(String name);
     boolean findByPasswordHash(String passwordHash);
 
+    Person findByName(String name);
     boolean existsByPasswordHash(String passwordHash);
+
+    Person getPersonById(Long id);
 }

@@ -2,7 +2,8 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{page_layout/layout}">
+      layout:decorate="~{page_layout/layout}"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>Cart</title>
@@ -19,9 +20,11 @@
             <th>Price</th>
             <th>Belongs To rest: </th>
             <th>Quantity</th>
+            <span sec:authorize="hasRole('OWNER')"><th>Actions</th></span>
         </tr>
         </thead>
         <tbody>
+<!--Thymeleaf Syntax for Iterating though a list => https://stackoverflow.com/questions/54480070/binding-list-in-thymeleaf-index-out-of-bounds-->
         <tr th:each="menuItem, i : ${products}">
             <td>
                 <input type="checkbox" th:field="*{selections[__${i.index}__].selected}">
@@ -32,11 +35,22 @@
             <td th:text="${menuItem.getPrice()} + ' €'"></td>
             <td th:text="${menuItem.getRestaurant().getRestName()}"></td>
             <td><input type="number" min="0" max="10" th:field="*{selections[__${i.index}__].quantity}"></td>
+            <span sec:authorize="hasRole('OWNER')">
+                <td><a class="btn btn-outline-light btn-sm" th:href="@{'/product/edit/'+ ${menuItem.getId()}+'?'+${rest_id}}">Edit Product</a> </td>
+            </span>
         </tr>
         </tbody>
 
     </table>
-    <button type="submit" class="btn btn-primary">Add To Cart</button>
+    <div class="form-group" th:if="${error != null}">
+        <p style="color: red" th:text="${error}"></p>
+    </div>
+    <div sec:authorize="isAuthenticated()">
+        <button type="submit" class="btn btn-primary">Add To Cart</button>
+    </div>
+    <div sec:authorize="!isAuthenticated()">
+        <a class="btn btn-outline-danger btn-sm" th:href="@{/login}">Login And Then Continue Choosing Products</a>
+    </div>
 </form>
 </section>
 </html>

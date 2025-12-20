@@ -9,6 +9,7 @@ public class SelectProductDTO_Validation {
     private String reason;
     private List<SelectedProducts> selectedProducts;
 
+
     public SelectProductDTO_Validation() {}
     public SelectProductDTO_Validation(boolean valid, String reason, List<SelectedProducts> selectedProducts) {
         this.valid = valid;

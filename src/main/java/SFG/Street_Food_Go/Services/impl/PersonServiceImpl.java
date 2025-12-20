@@ -5,6 +5,8 @@ import SFG.Street_Food_Go.Entities.PersonType;
 import SFG.Street_Food_Go.Repository.PersonRepository;
 import SFG.Street_Food_Go.Services.PersonService;
 import SFG.Street_Food_Go.Services.models.PersonResult;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +14,10 @@ import java.util.List;
 @Service
 public class PersonServiceImpl implements PersonService {
     private PersonRepository personRepository;
-    public PersonServiceImpl(PersonRepository personRepository){this.personRepository = personRepository;}
+
+
+    private PasswordEncoder passwordEncoder;
+    public PersonServiceImpl(PersonRepository personRepository,PasswordEncoder passwordEncoder ){this.personRepository = personRepository; this.passwordEncoder = passwordEncoder;}
 
     @Override
     public List<Person> getAllPersons() {
@@ -31,8 +36,37 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public PersonResult createPerson(Person person) {
+    public Person getPersonById(Long id) {
+        return personRepository.getPersonById(id);
+    }
 
+    private boolean usernameExists(Person person){
+        String username = person.getName();
+        List<Person> persons = personRepository.findAll();
+        for (Person p : persons){
+            if(p.getName().equals(username)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean emailExists(Person person){
+        String emailAddress = person.getEmailAddress();
+        List<Person> persons = personRepository.findAll();
+        for (Person p : persons){
+            if(p.getEmailAddress().equals(emailAddress)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public PersonResult createPerson(Person person) {
+        if(usernameExists(person) && emailExists(person)){
+            return new PersonResult(false, "Username/Email already exists Change then To something else");
+        }
         /*
           Check If The user Provided street NO in his address
          */
@@ -41,9 +75,11 @@ public class PersonServiceImpl implements PersonService {
             return new PersonResult(false, "Address[ '"+  givenAddress+ "' ] "+ "is not valid. You Should Add Both Name and Number Of The Address");
         }
 
-        /*
-        We Have to Convert Plain Text Password To Encrypted one
-         */
+
+        String raw_pass = person.getPasswordHash();
+        person.setPasswordHash(passwordEncoder.encode(raw_pass));
+        System.err.println("Before encode: " + raw_pass);
+        System.err.println("After encode: " + person.getPasswordHash());
         /*
         Here Also to add the push notific after person saved
          */
@@ -53,7 +89,7 @@ public class PersonServiceImpl implements PersonService {
         }
         return new PersonResult(false, "Unexpected Error");
     }
-    //
+
     private boolean isValidAddress(String address){
         // koita gia to andress an exei noumera kai grammata
         // business logic

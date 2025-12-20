@@ -22,20 +22,20 @@
             </tr>
         </thead>
         <tbody>
-        <tr th:each="order : ${orderRequests}">
+        <tr th:each="order, i : ${orderRequests}">
             <td th:text="${order.getOrder_id()}"></td>
             <td th:text="${order.getRestaurant().getRestName()}"></td>
             <td th:text="${order.getOrderStatus()}"></td>
-            <td th:if="${!#lists.isEmpty(order.getOrderStatus())}"
-              th:text="${order.order_placement[0].getOrder_Created_Time()}">
-            </td>
+            <td th:text="${order.getOrder_Created_Time()}"></td>
             <td th:text="${order.getPerson_order().getName() + ' ' + order.getPerson_order().getSurname()}"></td>
             <td th:text="${order.getPerson_order().getAddress()}"></td>
             <td>
                 <ol>
                     <li th:each="op : ${order.order_placement}">
-                        <span th:text="${op.getQuantity()}"></span>X
-                        <span th:text="${op.getProduct().getName()}"></span>
+                        <div th:if="${op.getProduct()} != null">
+                            <span th:text="${op.getQuantity()}"></span>X
+                            <span th:text="${op.getProduct().getName()}"></span>
+                        </div>
                     </li>
                 </ol>
             </td>

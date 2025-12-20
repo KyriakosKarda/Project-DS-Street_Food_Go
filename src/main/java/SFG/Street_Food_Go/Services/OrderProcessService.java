@@ -4,6 +4,9 @@ import SFG.Street_Food_Go.Entities.Product;
 import SFG.Street_Food_Go.Services.DTO.SelectedProducts;
 import SFG.Street_Food_Go.Services.DTO.OrderSelectionProductsDTO;
 import SFG.Street_Food_Go.Services.DTO.OrderToViewDTO;
+import SFG.Street_Food_Go.Services.Wrappers.OrderSubmissionFormWrapper;
+import SFG.Street_Food_Go.Services.models.PersonDetails;
+import SFG.Street_Food_Go.Services.models.SelectProductDTO_Validation;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,4 +21,8 @@ public interface OrderProcessService {
     List<OrderToViewDTO> orderView(List<Product> products,List<SelectedProducts> selectedItems);
 
     double getTotalPriceOfTheOrder(List<OrderToViewDTO> orderToViewDTOS);
+
+    SelectProductDTO_Validation validateChoices(OrderSelectionProductsDTO selected_order_details);
+
+    boolean saveOrder(Long rest_id, PersonDetails loggedInUser, OrderSubmissionFormWrapper orderForm);
 }

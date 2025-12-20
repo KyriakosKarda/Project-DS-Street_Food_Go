@@ -17,4 +17,6 @@ public interface ProductService{
     Product getProductById(Integer id);
 
     List<Product> findByRestaurant_Id(Long restaurantId);
+
+    ProductResult updateProduct(Product product);
 }

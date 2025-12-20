@@ -6,11 +6,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
-//
-//import jakarta.persistence.*;
-//
-//@Entity
-//@Table(name = "order_items")
+
 @Entity
 public class OrderPlacement {
     @Id
@@ -21,24 +17,17 @@ public class OrderPlacement {
     @Column
     private int quantity;
 
-    @Column
-    private LocalDate order_Created_Time;
-
     @ManyToOne()
-    @JoinColumn(name = "order_Id_fk")
+    @JoinColumn(name = "order_id_fk")
     private OrderRequest order_request;
 
     @ManyToOne
     @JoinColumn(name = "productId_fk")
     private Product product;
 
-    public OrderPlacement() {this.order_Created_Time = LocalDate.now();}
+    public OrderPlacement() {}
 
-    public OrderPlacement(int quantity, Long id) {
-        this.quantity = quantity;
-        this.id = id;
-        this.order_Created_Time = LocalDate.now();;
-    }
+
 
     public Long getId() {
         return id;
@@ -72,19 +61,12 @@ public class OrderPlacement {
         this.product = product;
     }
 
-    public LocalDate getOrder_Created_Time() {
-        return order_Created_Time;
-    }
 
-    public void setOrder_Created_Time(LocalDate order_Created_Time) {
-        this.order_Created_Time = order_Created_Time;
-    }
     @Override
     public String toString() {
         return "OrderPlacement{" +
                 "id=" + id +
                 ", quantity=" + quantity +
-                ", order_Created_Time=" + order_Created_Time +
                 ", order_request=" + order_request +
                 ", product=" + product +
                 '}';

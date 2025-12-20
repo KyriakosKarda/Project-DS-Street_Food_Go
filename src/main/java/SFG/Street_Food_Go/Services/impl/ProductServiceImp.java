@@ -44,6 +44,16 @@ public class ProductServiceImp implements ProductService {
         return productRepository.findByRestaurant_Id(restaurantId);
     }
 
+    @Override
+    public ProductResult updateProduct(Product product) {
+        ProductResult productResult = isPriceValid(product.getPrice().toString());
+        if(productResult.isCreated()){
+            productRepository.save(product);
+            return new ProductResult(true,null);
+        }
+        return productResult;
+    }
+
 
     private ProductResult isPriceValid(String price) {
         try {

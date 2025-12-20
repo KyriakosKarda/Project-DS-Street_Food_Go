@@ -4,17 +4,23 @@ package SFG.Street_Food_Go.Entities;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "orders")
 public class OrderRequest {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private Long order_id;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+
+    @Column
+    private LocalDateTime order_Created_Time;
 
 
     @ManyToOne
@@ -25,15 +31,10 @@ public class OrderRequest {
     @JoinColumn(name = "person_id_fk")
     private Person person_order;
 
-    @OneToMany(mappedBy = "order_request")
-    private List<OrderPlacement> order_placement;
+    @OneToMany(mappedBy = "order_request",cascade = CascadeType.ALL)
+    private List<OrderPlacement> order_placement = new ArrayList<>();
 
-    public OrderRequest() {}
-
-    public OrderRequest(OrderStatus orderStatus, Long order_id) {
-        this.orderStatus = orderStatus;
-        this.order_id = order_id;
-    }
+    public OrderRequest() {this.order_Created_Time = LocalDateTime.now();}
 
     public Long getOrder_id() {
         return order_id;
@@ -75,11 +76,20 @@ public class OrderRequest {
         this.order_placement = order_placement;
     }
 
+    public LocalDateTime getOrder_Created_Time() {
+        return order_Created_Time;
+    }
+
+    public void setOrder_Created_Time(LocalDateTime order_Created_Time) {
+        this.order_Created_Time = order_Created_Time;
+    }
+
     @Override
     public String toString() {
         return "OrderRequest{" +
                 "order_id=" + order_id +
                 ", orderStatus=" + orderStatus +
+                ", order_Created_Time=" + order_Created_Time +
                 ", restaurant=" + restaurant +
                 ", person_order=" + person_order +
                 ", order_placement=" + order_placement +
