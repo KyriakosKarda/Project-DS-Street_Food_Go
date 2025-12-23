@@ -14,27 +14,32 @@
         <div class="container-fluid"><h1>Catalog of Foods</h1></div>
         <thead>
         <tr>
-            <th>Select Product</th>
+            <div sec:authorize="hasRole('CUSTOMER')"><th>Select Product</th></div>
             <th>Name</th>
             <th>Description</th>
             <th>Price</th>
             <th>Belongs To rest: </th>
-            <th>Quantity</th>
-            <span sec:authorize="hasRole('OWNER')"><th>Actions</th></span>
+            <div sec:authorize="hasRole('CUSTOMER')"><th>Quantity</th></div>
+            <div sec:authorize="hasRole('OWNER')"><th>Actions</th></div>
         </tr>
         </thead>
         <tbody>
 <!--Thymeleaf Syntax for Iterating though a list => https://stackoverflow.com/questions/54480070/binding-list-in-thymeleaf-index-out-of-bounds-->
         <tr th:each="menuItem, i : ${products}">
-            <td>
-                <input type="checkbox" th:field="*{selections[__${i.index}__].selected}">
-                <input type="hidden" th:field="*{selections[__${i.index}__].productId}">
-            </td>
+            <div sec:authorize="hasRole('CUSTOMER')">
+                <td>
+
+                    <input type="checkbox" th:field="*{selections[__${i.index}__].selected}">
+                    <input type="hidden" th:field="*{selections[__${i.index}__].productId}">
+                </td>
+            </div>
             <td th:text="${menuItem.getName()}"></td>
             <td th:text="${menuItem.getDescription()}"></td>
             <td th:text="${menuItem.getPrice()} + ' €'"></td>
             <td th:text="${menuItem.getRestaurant().getRestName()}"></td>
-            <td><input type="number" min="0" max="10" th:field="*{selections[__${i.index}__].quantity}"></td>
+            <div sec:authorize="hasRole('CUSTOMER')">
+                <td><input type="number" min="0" max="10" th:field="*{selections[__${i.index}__].quantity}"></td>
+            </div>
             <span sec:authorize="hasRole('OWNER')">
                 <td><a class="btn btn-outline-light btn-sm" th:href="@{'/product/edit/'+ ${menuItem.getId()}+'?'+${rest_id}}">Edit Product</a> </td>
             </span>
@@ -45,7 +50,7 @@
     <div class="form-group" th:if="${error != null}">
         <p style="color: red" th:text="${error}"></p>
     </div>
-    <div sec:authorize="isAuthenticated()">
+    <div sec:authorize="hasRole('CUSTOMER')">
         <button type="submit" class="btn btn-primary">Add To Cart</button>
     </div>
     <div sec:authorize="!isAuthenticated()">

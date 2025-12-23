@@ -16,6 +16,7 @@ import SFG.Street_Food_Go.Services.ProductService;
 import SFG.Street_Food_Go.Services.RestaurantService;
 import SFG.Street_Food_Go.Services.Wrappers.OrderSubmissionFormWrapper;
 import SFG.Street_Food_Go.Services.models.PersonDetails;
+import SFG.Street_Food_Go.Services.models.PlaceOrderResult;
 import SFG.Street_Food_Go.Services.models.SelectProductDTO_Validation;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -121,7 +122,7 @@ public class OrderProcessImp implements OrderProcessService {
 
     @Override
     @Transactional
-    public boolean saveOrder(Long rest_id, PersonDetails loggedInUser, OrderSubmissionFormWrapper orderForm) {
+    public PlaceOrderResult saveOrder(Long rest_id, PersonDetails loggedInUser, OrderSubmissionFormWrapper orderForm) {
         Long person_id = loggedInUser.getPersonId();
 
         OrderRequest orderRequest = new OrderRequest();
@@ -150,6 +151,19 @@ public class OrderProcessImp implements OrderProcessService {
             orderRequest.getOrder_placement().add(orderPlacement);
         }
         OrderRequest saved = orderRequestsRepository.save(orderRequest);
-        return true;
+        if(saved != null){
+            return new PlaceOrderResult(true,"Order has been saved successfully");
+        }
+        return new PlaceOrderResult(false,"Order has NOT been saved.Unexpected Error");
+    }
+
+    @Override
+    public List<OrderRequest> getAllOrderRequests() {
+        return orderRequestsRepository.findAll();
+    }
+
+    @Override
+    public List<OrderPlacement> getAllOrderPlacements() {
+        return orderPlacementRepository.findAll();
     }
 }

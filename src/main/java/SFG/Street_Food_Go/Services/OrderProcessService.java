@@ -1,11 +1,14 @@
 package SFG.Street_Food_Go.Services;
 
+import SFG.Street_Food_Go.Entities.OrderPlacement;
+import SFG.Street_Food_Go.Entities.OrderRequest;
 import SFG.Street_Food_Go.Entities.Product;
 import SFG.Street_Food_Go.Services.DTO.SelectedProducts;
 import SFG.Street_Food_Go.Services.DTO.OrderSelectionProductsDTO;
 import SFG.Street_Food_Go.Services.DTO.OrderToViewDTO;
 import SFG.Street_Food_Go.Services.Wrappers.OrderSubmissionFormWrapper;
 import SFG.Street_Food_Go.Services.models.PersonDetails;
+import SFG.Street_Food_Go.Services.models.PlaceOrderResult;
 import SFG.Street_Food_Go.Services.models.SelectProductDTO_Validation;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +27,9 @@ public interface OrderProcessService {
 
     SelectProductDTO_Validation validateChoices(OrderSelectionProductsDTO selected_order_details);
 
-    boolean saveOrder(Long rest_id, PersonDetails loggedInUser, OrderSubmissionFormWrapper orderForm);
+    PlaceOrderResult saveOrder(Long rest_id, PersonDetails loggedInUser, OrderSubmissionFormWrapper orderForm);
+
+    List<OrderRequest> getAllOrderRequests();
+
+    List<OrderPlacement> getAllOrderPlacements();
 }

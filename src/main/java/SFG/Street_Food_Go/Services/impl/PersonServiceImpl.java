@@ -90,7 +90,7 @@ public class PersonServiceImpl implements PersonService {
         return new PersonResult(false, "Unexpected Error");
     }
 
-    private boolean isValidAddress(String address){
+    public static boolean isValidAddress(String address){
         // koita gia to andress an exei noumera kai grammata
         // business logic
         if(address == null || address.isBlank()){

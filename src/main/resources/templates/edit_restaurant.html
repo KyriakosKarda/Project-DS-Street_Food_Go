@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<section layout:fragment="main-content">
+    <form th:action="'/restaurant/'+ ${rest_id}" th:object="${res}" method="post"><br>
+        <h1>Edit <h1 style="color: red" th:text="${res.getRestName()}"></h1></h1><br><br>
+        <input type="hidden" th:field="*{restId}" />
+        <input type="hidden" th:field="*{restStars}" />
+        <input type="hidden" th:field="*{owner}" />
+        <div class="form-group">
+            <label for="rest_name">Product Name</label>
+            <input type="text" id="rest_name" th:field="*{restName}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="rest_address">Restaurant Address</label>
+            <input type="text" id="rest_address" class="form-control" th:field="*{restAddress}"  required>
+        </div>
+
+        <div class="form-group">
+            <label for="rest_region">Restaurant Region</label>
+            <input type="text" id="rest_region" class="form-control" th:field="*{restRegion}"  required>
+        </div>
+
+        <div class="form-group">
+            <label for="type">Is Restaurant Open?</label>
+            <select id="type" name="type" class="form-control" th:field="*{open}" required>
+                <option th:value="true">OPEN</option>
+                <option th:value="false">CLOSED</option>
+            </select>
+        </div>
+
+        <div class="form-group" th:if="${error != null}">
+            <p style="color: red" th:text="${error}"></p>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+
+</section>
+</html>

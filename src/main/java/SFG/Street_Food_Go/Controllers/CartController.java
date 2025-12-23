@@ -11,6 +11,7 @@ import SFG.Street_Food_Go.Services.DTO.OrderSelectionProductsDTO;
 import SFG.Street_Food_Go.Services.DTO.OrderToViewDTO;
 import SFG.Street_Food_Go.Services.Wrappers.OrderSubmissionFormWrapper;
 import SFG.Street_Food_Go.Services.models.PersonDetails;
+import SFG.Street_Food_Go.Services.models.PlaceOrderResult;
 import SFG.Street_Food_Go.Services.models.SelectProductDTO_Validation;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -119,7 +120,11 @@ public class CartController {
                                 @AuthenticationPrincipal PersonDetails loggedInUser,
                                 @ModelAttribute("orderForm") OrderSubmissionFormWrapper orderForm){
         System.out.println("person_id: "+loggedInUser.getPersonId());
-        boolean success = orderProcessService.saveOrder(rest_id,loggedInUser,orderForm);
-        return "redirect:/orders";
+        PlaceOrderResult result = orderProcessService.saveOrder(rest_id,loggedInUser,orderForm);
+        if(result.isCreated()) {
+            return "redirect:/orders?"+result.getMessage();
+        }
+        model.addAttribute("error",result.getMessage());
+        return "redirect:/viewOrder/"+rest_id;
     }
 }

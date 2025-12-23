@@ -26,7 +26,7 @@
         <tr th:each="res : ${res}">
             <div th:if="${res.isOpen()} ">
 <!--                <td th:text="${res.getRestName()}"></td>-->
-                <td> <a class="btn btn-outline-light btn-sm" th:href="@{'/menu/' + ${res.getRestId()}+'/cart'}">Show Menu</a></td>
+                <td> <a class="btn btn-primary btn-sm" th:href="@{'/menu/' + ${res.getRestId()}+'/cart'}">Show Menu</a></td>
                 <td th:text="${res.getRestName()}"></td>
                 <td th:text="${res.getRestAddress()}"></td>
                 <td th:text="${res.getRestRegion()}"></td>

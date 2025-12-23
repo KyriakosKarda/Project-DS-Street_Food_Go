@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurant</title>
+</head>
+<section layout:fragment="main-content">
+    <h1>Edit Your Restaurant</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="restaurant,i : ${res}">
+                <td th:text="${i.index + 1}"></td>
+                <td><a class="btn btn-primary btn-sm" th:text="${restaurant.getRestName()}" th:href="@{'/restaurant/' +${restaurant.getRestId()}}"></a></td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+</html>
