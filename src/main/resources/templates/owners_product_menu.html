@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Owner's Menu</title>
+</head>
+<section layout:fragment="main-content">
+    <br>
+    <div class="container-fluid"><h1>Edit The Menu Of Your Restaurants</h1></div>
+    <br>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Actions</th>
+            <th>Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="res : ${res}">
+            <div th:if="${res.isOpen()} ">
+                <td> <a class="btn btn-primary btn-danger" th:href="@{'/menu/' + ${res.getRestId()}}">Edit Menu</a></td>
+                <td> <h3 th:text="${res.getRestName()}"></h3></td>
+            </div>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</html>

@@ -1,7 +1,9 @@
 package SFG.Street_Food_Go.Services.impl;
 
 import SFG.Street_Food_Go.Entities.Product;
+import SFG.Street_Food_Go.Entities.Restaurant;
 import SFG.Street_Food_Go.Repository.ProductRepository;
+import SFG.Street_Food_Go.Repository.RestaurantRepository;
 import SFG.Street_Food_Go.Services.ProductService;
 import SFG.Street_Food_Go.Services.models.ProductResult;
 import ognl.NumericExpression;
@@ -12,8 +14,9 @@ import java.util.List;
 @Service
 public class ProductServiceImp implements ProductService {
     private ProductRepository productRepository;
+    private RestaurantRepository restaurantRepository;
 
-    public ProductServiceImp(ProductRepository productRepository) {this.productRepository = productRepository;}
+    public ProductServiceImp(ProductRepository productRepository,RestaurantRepository restaurantRepository) {this.productRepository = productRepository;this.restaurantRepository = restaurantRepository;}
 
     @Override
     public List<Product> getAllProducts() {
@@ -45,13 +48,23 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public ProductResult updateProduct(Product product) {
-        ProductResult productResult = isPriceValid(product.getPrice().toString());
+    public ProductResult updateProduct(Product formProduct,Long rest_id,Integer prod_id) {
+        ProductResult productResult = isPriceValid(formProduct.getPrice().toString());
         if(productResult.isCreated()){
-            productRepository.save(product);
+            Restaurant restaurant = restaurantRepository.getRestaurantById(rest_id);
+            System.out.println(restaurant.getRestId());
+            Product p = productRepository.getProductById(prod_id);
+
+            p.setDescription(formProduct.getDescription());
+            p.setPrice(formProduct.getPrice());
+            p.setName(formProduct.getName());
+
+            System.err.println(formProduct.getRestaurant().getRestId());
+            productRepository.save(p);
+
             return new ProductResult(true,null);
         }
-        return productResult;
+        return new ProductResult(false,productResult.getErrorMessage());
     }
 
 

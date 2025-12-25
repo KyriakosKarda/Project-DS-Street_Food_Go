@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Products</title>
+</head>
+<section layout:fragment="main-content">
+    <br>
+    <div class="container-fluid"><h1>Edit Products</h1></div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Product Description</th>
+                <th>Product Price</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="product : ${products}">
+                <td th:text="${product.getName()}"></td>
+                <td th:text="${product.getDescription()}"></td>
+                <td th:text="${product.getPrice()}"></td>
+                <td> <a th:href="@{'/product/edit/'+ ${product.getId()} + '/' + ${rest_id}}" class="btn btn-outline-danger">Click Here To Edit</a></td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+</html>

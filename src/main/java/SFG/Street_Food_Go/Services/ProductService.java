@@ -11,12 +11,12 @@ import java.util.List;
 public interface ProductService{
 
     List<Product> getAllProducts();
-    //might need to change it to a Product Result as it is at the office hopurs
+
     ProductResult createProduct(Product product);
 
     Product getProductById(Integer id);
 
     List<Product> findByRestaurant_Id(Long restaurantId);
 
-    ProductResult updateProduct(Product product);
+    ProductResult updateProduct(Product product,Long rest_id,Integer prod_id);
 }

@@ -16,4 +16,5 @@ public interface RestaurantService {
     List<Restaurant> getRestaurantByPersonId(Long id);
 
     RestaurantResult updateRestaurantDetails(Restaurant restaurant);
+
 }

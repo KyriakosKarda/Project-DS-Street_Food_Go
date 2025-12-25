@@ -7,6 +7,7 @@ import SFG.Street_Food_Go.Services.RestaurantService;
 import SFG.Street_Food_Go.Services.models.RestaurantResult;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 @Service
 public class RestaurantServiceImp implements RestaurantService {
