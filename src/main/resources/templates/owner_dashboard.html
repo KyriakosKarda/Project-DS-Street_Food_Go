@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+
+</head>
+
+<section layout:fragment="main-content" th:object="${person}">
+    <h1>Welcome back <span th:text="${person.getName()}"></span></h1>
+    <div>
+        <a th:href="@{/restaurant}" class="btn btn-outline-info">🏪 Edit Your Restaurant</a>
+        <a th:href="@{/order/restaurant}" class="btn btn-outline-info">🛵 Edit Your Orders</a>
+        <a th:href="@{/menu}" class="btn btn-outline-info">🍽️ Edit Your Menu</a>
+    </div>
+</section>
+</html>

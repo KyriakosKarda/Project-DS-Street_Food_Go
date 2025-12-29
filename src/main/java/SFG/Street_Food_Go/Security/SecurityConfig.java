@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 
 @Configuration
 @EnableWebSecurity
@@ -20,20 +19,19 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
              http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/","/js/**", "/css/**","/menu/**","/register","/login").permitAll()
+                        .requestMatchers("/","/js/**", "/css/**","/register","/login","/menu/*/cart").permitAll()
                         .requestMatchers("/orders/**").hasRole("OWNER")
-                        .requestMatchers("/viewOrder/**").authenticated()
+                        .requestMatchers("/menu/*").hasRole("OWNER")
+                        .requestMatchers("/viewOrder/**").hasRole("CUSTOMER")
+                        .requestMatchers("/order/restaurant/**").hasRole("OWNER")
                         .requestMatchers("/product/**").hasRole("OWNER")
-                        .requestMatchers("/menu/**").hasRole("CUSTOMER")
                         .requestMatchers("/restaurant/**").hasRole("OWNER")
-                        //uncomment once we create the custom redirection class once a user logged in
-                        // users goes to /restaurants  and owner goes to /restaurant/{rest_id}
-                        //.requestMatchers("/restaurants/**").access(new WebExpressionAuthorizationManager("isAnonymous() or hasRole('CUSTOMER')"))
-                        .anyRequest().authenticated()
+                        .requestMatchers("/dashboard").hasRole("OWNER")
+                        .anyRequest().permitAll()
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/restaurants", true)
+                        .successHandler(new AuthSuccessHandler())
                         .permitAll())
                 .logout((logout) -> logout.permitAll());
         return http.build();

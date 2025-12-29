@@ -6,7 +6,7 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
-    <title>Cart</title>
+    <title>Menu-Selection</title>
 </head>
 <section layout:fragment="main-content">
 <form th:action="@{'/menu/'+ ${rest_id}+'/cart'}" method="POST" th:object="${OrderDTO}">
@@ -20,7 +20,6 @@
             <th>Price</th>
             <th>Belongs To rest: </th>
             <div sec:authorize="hasRole('CUSTOMER')"><th>Quantity</th></div>
-            <div sec:authorize="hasRole('OWNER')"><th>Actions</th></div>
         </tr>
         </thead>
         <tbody>
@@ -28,7 +27,6 @@
         <tr th:each="menuItem, i : ${products}">
             <div sec:authorize="hasRole('CUSTOMER')">
                 <td>
-
                     <input type="checkbox" th:field="*{selections[__${i.index}__].selected}">
                     <input type="hidden" th:field="*{selections[__${i.index}__].productId}">
                 </td>
@@ -40,15 +38,12 @@
             <div sec:authorize="hasRole('CUSTOMER')">
                 <td><input type="number" min="0" max="10" th:field="*{selections[__${i.index}__].quantity}"></td>
             </div>
-            <span sec:authorize="hasRole('OWNER')">
-                <td><a class="btn btn-outline-light btn-sm" th:href="@{'/product/edit/'+ ${menuItem.getId()}+'?'+${rest_id}}">Edit Product</a> </td>
-            </span>
         </tr>
         </tbody>
 
     </table>
     <div class="form-group" th:if="${error != null}">
-        <p style="color: red" th:text="${error}"></p>
+        <p style="color: red; font-size: x-large" th:text="${error}"></p>
     </div>
     <div sec:authorize="hasRole('CUSTOMER')">
         <button type="submit" class="btn btn-primary">Add To Cart</button>

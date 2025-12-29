@@ -2,11 +2,9 @@ package SFG.Street_Food_Go.Controllers;
 
 
 import SFG.Street_Food_Go.Entities.Product;
-import SFG.Street_Food_Go.Entities.Restaurant;
 import SFG.Street_Food_Go.Services.ProductService;
 import SFG.Street_Food_Go.Services.RestaurantService;
 import SFG.Street_Food_Go.Services.models.PersonDetails;
-import SFG.Street_Food_Go.Services.models.PersonResult;
 import SFG.Street_Food_Go.Services.models.ProductResult;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -28,16 +26,16 @@ public class ProductController {
 
 
     @GetMapping("/product/new")
-    public String newTest(Model model){
+    public String product(Model model){
         Product p1 = new Product();
         model.addAttribute("p1",p1);
         model.addAttribute("restaurants",restaurantService.getRestaurants());
-        return "newProduct";
+        return "new_product";
     }
 
 
     @PostMapping("/product/new")
-    public String newTest(Model model,@ModelAttribute("p1") Product p1){
+    public String product(Model model,@ModelAttribute("p1") Product p1){
         System.out.println(p1);
         ProductResult result = productService.createProduct(p1);
         if(result.isCreated()){
@@ -46,7 +44,7 @@ public class ProductController {
         model.addAttribute("products",productService.getAllProducts());
         model.addAttribute("restaurants",restaurantService.getRestaurants());
         model.addAttribute("error",result.getErrorMessage());
-        return "newProduct";
+        return "new_product";
     }
 
 
@@ -55,7 +53,7 @@ public class ProductController {
         Product product = productService.getProductById(prod_id);
         model.addAttribute("product",product);
         model.addAttribute("rest_id",rest_id);
-        return "editProduct";
+        return "edit_product";
     }
 
     @PostMapping("/product/edit/{prod_id}/{rest_id}")

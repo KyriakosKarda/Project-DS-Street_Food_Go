@@ -3,10 +3,10 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{page_layout/layout}">
-<header layout:fragment="header">
+<head>
     <meta charset="UTF-8">
     <title>Edit Product</title>
-</header>
+</head>
 <body>
 <section layout:fragment="main-content">
     <form th:action="@{'/product/edit/'+ ${prod_id} + '/' + ${rest_id}}" th:object="${product}" method="POST">

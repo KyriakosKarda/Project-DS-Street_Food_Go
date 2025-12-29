@@ -3,10 +3,10 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{page_layout/layout}">
-<header layout:fragment="header">
+<head>
     <meta charset="UTF-8">
     <title>Register Page</title>
-</header>
+</head>
 
 <section layout:fragment="main-content">
   <form th:action="@{/register}" method="POST" th:object="${person}">
@@ -22,32 +22,32 @@
 
     <div class="form-group">
       <label for="firstName">First Name</label>
-      <input type="text" id="firstName" class="form-control" th:field="*{name}" required>
+      <input type="text" id="firstName" class="form-control" th:field="*{name}" placeholder="Enter Your Username" required>
     </div>
 
     <div class="form-group">
       <label for="lastName">Last Name</label>
-      <input type="text" id="lastName" class="form-control" th:field="*{surname}" required>
+      <input type="text" id="lastName" class="form-control" th:field="*{surname}" placeholder="Enter Your Surname" required>
     </div>
 
     <div class="form-group">
       <label for="email">Email</label>
-      <input type="email" id="email" class="form-control" th:field="*{emailAddress}" required>
+      <input type="email" id="email" class="form-control" th:field="*{emailAddress}" placeholder="Enter Your Email Address" required>
     </div>
 
     <div class="form-group">
       <label for="phone">Cell-Phone</label>
-      <input type="text" id="phone" class="form-control" th:field="*{phoneNumber}" required>
+      <input type="text" id="phone" class="form-control" th:field="*{phoneNumber}" placeholder="Enter Your Phone Number" required>
     </div>
 
     <div class="form-group">
       <label for="address">Address</label>
-      <input type="text" id="address" class="form-control" th:field="*{address}" required>
+      <input type="text" id="address" class="form-control" th:field="*{address}" placeholder="Enter Your Address" required>
     </div>
 
     <div class="form-group">
       <label for="password">Password</label>
-      <input type="password" id="password" class="form-control" th:field="*{passwordHash}" required>
+      <input type="password" id="password" class="form-control" th:field="*{passwordHash}" placeholder="Enter Your Password" required>
     </div>
 
     <div class="form-group" th:if="${error != null}">

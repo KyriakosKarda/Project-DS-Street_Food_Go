@@ -20,6 +20,7 @@
             <a sec:authorize="hasRole('OWNER')" class="nav-link active" href="/restaurant">My Restaurants</a>
             <a sec:authorize="hasRole('OWNER')" class="nav-link active" href="/menu">Edit My Menu</a>
             <a sec:authorize="hasRole('OWNER')" class="nav-link active" href="/order/restaurant">Edit Your Orders</a>
+            <a sec:authorize="hasRole('OWNER')" class="nav-link active" href="/dashboard">Dashboard</a>
             <a sec:authorize="isAuthenticated()" class="nav-link">
                     <form th:action="@{/logout}" method="POST">
                         <input type="submit" class="btn btn-primary" value="Sign Out">

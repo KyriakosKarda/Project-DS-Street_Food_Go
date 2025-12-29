@@ -32,15 +32,6 @@ public class OrderController {
         this.restaurantService = restaurantService;
     }
 
-    @GetMapping("/orders")
-    public String orders(Model model) {
-        List<OrderRequest> req = orderProcessService.getAllOrderRequests();
-        List<OrderPlacement> placements = orderProcessService.getAllOrderPlacements();
-        model.addAttribute("orderPlacements", placements);
-        model.addAttribute("orderRequests", req);
-        return "orders";
-    }
-
     @GetMapping("/order/restaurant")
     public String restaurant(Model model, @AuthenticationPrincipal PersonDetails user) {
         return  "order_dashboard";

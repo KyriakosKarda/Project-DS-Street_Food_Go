@@ -1,10 +1,7 @@
 package SFG.Street_Food_Go.Controllers;
 import SFG.Street_Food_Go.Entities.*;
-import SFG.Street_Food_Go.Repository.OrderPlacementRepository;
-import SFG.Street_Food_Go.Repository.OrderRequestsRepository;
 import SFG.Street_Food_Go.Services.DTO.SelectedProducts;
 import SFG.Street_Food_Go.Services.OrderProcessService;
-import SFG.Street_Food_Go.Services.PersonService;
 import SFG.Street_Food_Go.Services.ProductService;
 import SFG.Street_Food_Go.Services.RestaurantService;
 import SFG.Street_Food_Go.Services.DTO.OrderSelectionProductsDTO;
@@ -22,8 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.Instant;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,7 +106,7 @@ public class CartController {
         model.addAttribute("products",orderSubmissionFormWrapper);
         model.addAttribute("rest_id",rest_id);
         model.addAttribute("total_price",orderProcessService.getTotalPriceOfTheOrder(orderView));
-        return "finalizeOrder";
+        return "finalize_order";
     }
 
     //here to add Post mapping from /viewOrder/{rest_id}

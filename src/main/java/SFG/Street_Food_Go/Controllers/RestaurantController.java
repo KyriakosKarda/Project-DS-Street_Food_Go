@@ -5,7 +5,6 @@ import SFG.Street_Food_Go.Services.RestaurantService;
 import SFG.Street_Food_Go.Services.impl.RestaurantServiceImp;
 import SFG.Street_Food_Go.Services.models.PersonDetails;
 import SFG.Street_Food_Go.Services.models.RestaurantResult;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +21,7 @@ public class RestaurantController {
         @GetMapping("/restaurants")
         public String restaurants(Model model){
             model.addAttribute("res",restaurantService.getRestaurants());
-            return  "showRestaurants";
+            return "show_restaurants";
         }
 
         @GetMapping("/restaurant")
@@ -31,6 +30,7 @@ public class RestaurantController {
             model.addAttribute("res",restaurant);
             return  "restaurant";
         }
+
         @GetMapping("/restaurant/{rest_id}")
         public String restaurant(Model model, @PathVariable Long rest_id, @AuthenticationPrincipal PersonDetails loggedInOwner){
             Restaurant restaurant =  restaurantService.getRestaurantById(rest_id);
