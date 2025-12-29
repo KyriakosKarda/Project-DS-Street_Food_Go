@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Dashboard</title>
+</head>
+<section layout:fragment="main-content">
+     <div style="align-content: center">
+        <h2>Select An Order Category To View</h2><br>
+         <div>
+              <a th:href="@{/order/restaurant/active}" class="btn btn-success">Active Orders</a>
+              <a th:href="@{/order/restaurant/pending}" class="btn btn-primary">Pending Orders</a>
+              <a th:href="@{/order/restaurant/rejected}" class="btn btn-danger">Rejected Orders</a>
+         </div>
+     </div><br>
+    <div th:if="${success} != null" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${failure} != null" class="alert alert-danger" th:text="${failure}"></div>
+</section>
+</html>

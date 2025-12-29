@@ -21,10 +21,11 @@ public class SecurityConfig {
              http
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/","/js/**", "/css/**","/menu/**","/register","/login").permitAll()
-                        .requestMatchers("/orders/**").authenticated()
+                        .requestMatchers("/orders/**").hasRole("OWNER")
                         .requestMatchers("/viewOrder/**").authenticated()
                         .requestMatchers("/product/**").hasRole("OWNER")
                         .requestMatchers("/menu/**").hasRole("CUSTOMER")
+                        .requestMatchers("/restaurant/**").hasRole("OWNER")
                         //uncomment once we create the custom redirection class once a user logged in
                         // users goes to /restaurants  and owner goes to /restaurant/{rest_id}
                         //.requestMatchers("/restaurants/**").access(new WebExpressionAuthorizationManager("isAnonymous() or hasRole('CUSTOMER')"))

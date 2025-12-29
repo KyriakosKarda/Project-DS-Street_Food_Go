@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Catalog Of Orders</title>
+</head>
+<section layout:fragment="main-content">
+    <div class="row justify-content-center">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#Order Id</th>
+                <th>Name Of The Restaurant</th>
+                <th>Status Of The Order</th>
+                <th>Date Issued</th>
+                <th>Full Name Of The Customer</th>
+                <th>Address</th>
+                <th>List of Products</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order, i : ${orders}">
+                <td th:text="${order.getOrder_id()}"></td>
+                <td th:text="${order.getRestaurant().getRestName()}"></td>
+                <td th:text="${order.getOrderStatus()}"></td>
+                <td th:text="${order.getOrder_Created_Time()}"></td>
+                <td th:text="${order.getPerson_order().getName() + ' ' + order.getPerson_order().getSurname()}"></td>
+                <td th:text="${order.getPerson_order().getAddress()}"></td>
+                <td>
+                    <ol>
+                        <li th:each="op : ${order.order_placement}">
+                            <div th:if="${op.getProduct()} != null">
+                                <span th:text="${op.getQuantity()}"></span>X
+                                <span th:text="${op.getProduct().getName()}"></span>
+                            </div>
+                        </li>
+                    </ol>
+                </td>
+                <td>
+                    <span><a th:href="@{'/order/restaurant/' + ${order.getOrder_id()} +'/update'}" class="btn btn-primary">update status</a></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${ #lists.isEmpty(orders)}">
+        <p style="color:red;font-size: x-large">No Orders found Just Yet.</p>
+    </div>
+</section>
+</html>

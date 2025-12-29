@@ -1,12 +1,11 @@
 package SFG.Street_Food_Go.Services;
 
-import SFG.Street_Food_Go.Entities.OrderPlacement;
-import SFG.Street_Food_Go.Entities.OrderRequest;
-import SFG.Street_Food_Go.Entities.Product;
+import SFG.Street_Food_Go.Entities.*;
 import SFG.Street_Food_Go.Services.DTO.SelectedProducts;
 import SFG.Street_Food_Go.Services.DTO.OrderSelectionProductsDTO;
 import SFG.Street_Food_Go.Services.DTO.OrderToViewDTO;
 import SFG.Street_Food_Go.Services.Wrappers.OrderSubmissionFormWrapper;
+import SFG.Street_Food_Go.Services.models.OrderRequestUpdateStatusResult;
 import SFG.Street_Food_Go.Services.models.PersonDetails;
 import SFG.Street_Food_Go.Services.models.PlaceOrderResult;
 import SFG.Street_Food_Go.Services.models.SelectProductDTO_Validation;
@@ -32,4 +31,24 @@ public interface OrderProcessService {
     List<OrderRequest> getAllOrderRequests();
 
     List<OrderPlacement> getAllOrderPlacements();
+
+    List<OrderRequest> getAllOrderRequestsByRestaurant(List<Restaurant> restaurants);
+
+    OrderRequestUpdateStatusResult markOrderPendingIfAccepted(Long orderId);
+
+    OrderRequestUpdateStatusResult rejectOrder(Long orderId);
+
+    List<OrderRequest> getActiveOrderRequests(List<Restaurant> restaurants);
+
+    List<OrderRequest> getPendingOrderRequests(List<Restaurant> restaurants);
+
+    List<OrderRequest> getDeclinedOrderRequests(List<Restaurant> restaurants);
+
+    OrderRequest getOrderRequestById(Long orderId);
+
+    OrderStatus[] getOrderStatusForActiveOrders();
+
+    OrderRequestUpdateStatusResult updateOrderStatus(OrderRequest orderRequest,Long orderId);
+
+    OrderStatus getOrderStatuses(OrderStatus orderStatus);
 }

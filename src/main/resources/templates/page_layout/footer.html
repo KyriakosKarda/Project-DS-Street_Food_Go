@@ -9,10 +9,9 @@
 
 <footer class="mastfoot mt-auto" th:fragment="header">
   <div class="inner">
-    <p>Authors:
-      <p><a href="https://github.com/KyriakosKarda/Project-DS-Street_Food_Go" target="_blank">@Kyriakos Kardabikis @Angelliki Vasili @Spyridon Xenos</a></p>
+      <p>Authors: <small><a href="https://github.com/KyriakosKarda/Project-DS-Street_Food_Go" target="_blank">@Kyriakos Kardabikis @Angelliki Vasili @Spyridon Xenos</a></small></p>
       <div sec:authorize="isAuthenticated()">
-          <small>User: <span sec:authentication="name"></span></small><br>
+          <small>User: <span sec:authentication="name"></span></small>
           <small>Role: <span sec:authentication="principal.authorities"></span></small>
       </div>
   </div>

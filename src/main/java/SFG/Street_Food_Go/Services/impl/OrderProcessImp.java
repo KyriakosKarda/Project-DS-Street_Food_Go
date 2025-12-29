@@ -1,9 +1,6 @@
 package SFG.Street_Food_Go.Services.impl;
 
-import SFG.Street_Food_Go.Entities.OrderPlacement;
-import SFG.Street_Food_Go.Entities.OrderRequest;
-import SFG.Street_Food_Go.Entities.OrderStatus;
-import SFG.Street_Food_Go.Entities.Product;
+import SFG.Street_Food_Go.Entities.*;
 import SFG.Street_Food_Go.Repository.OrderPlacementRepository;
 import SFG.Street_Food_Go.Repository.OrderRequestsRepository;
 import SFG.Street_Food_Go.Services.DTO.SelectedProducts;
@@ -15,6 +12,7 @@ import SFG.Street_Food_Go.Services.PersonService;
 import SFG.Street_Food_Go.Services.ProductService;
 import SFG.Street_Food_Go.Services.RestaurantService;
 import SFG.Street_Food_Go.Services.Wrappers.OrderSubmissionFormWrapper;
+import SFG.Street_Food_Go.Services.models.OrderRequestUpdateStatusResult;
 import SFG.Street_Food_Go.Services.models.PersonDetails;
 import SFG.Street_Food_Go.Services.models.PlaceOrderResult;
 import SFG.Street_Food_Go.Services.models.SelectProductDTO_Validation;
@@ -25,6 +23,9 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import static SFG.Street_Food_Go.Entities.OrderStatus.BEING_PREPARED;
 
 @Service
 public class OrderProcessImp implements OrderProcessService {
@@ -128,7 +129,7 @@ public class OrderProcessImp implements OrderProcessService {
         OrderRequest orderRequest = new OrderRequest();
         // we have to chamge it to PENDING but once we enter this value we get an erro from db
         // since we added this attribute to the Enum class after we created the db..
-        orderRequest.setOrderStatus(OrderStatus.BEING_PREPARED);
+        orderRequest.setOrderStatus(OrderStatus.PENDING);
 
         orderRequest.setPerson_order(personService.getPersonById(person_id)); //who ordered
         orderRequest.setRestaurant(restaurantService.getRestaurantById(rest_id));//in which rest
@@ -165,5 +166,151 @@ public class OrderProcessImp implements OrderProcessService {
     @Override
     public List<OrderPlacement> getAllOrderPlacements() {
         return orderPlacementRepository.findAll();
+    }
+
+    @Override
+    public List<OrderRequest> getAllOrderRequestsByRestaurant(List<Restaurant> restaurants) {
+        Long[] restaurant_ids = new Long[restaurants.size()];
+        List<OrderRequest> requestList = new ArrayList<>();
+
+        for(int i = 0; i < restaurants.size(); i++){
+            restaurant_ids[i] = restaurants.get(i).getRestId();
+        }
+
+        for(int i = 0; i < restaurants.size(); i++){
+            List<OrderRequest> requests = orderRequestsRepository.getOrderRequestByRestaurant_Id(restaurant_ids[i]);
+            for(OrderRequest orderRequest : requests){
+                requestList.add(orderRequest);
+            }
+        }
+        int x = 0;
+        for(OrderRequest list : requestList){
+            x++;
+        }
+        System.out.println("count: " + x);
+        return requestList;
+    }
+
+    @Override
+    @Transactional
+    public OrderRequestUpdateStatusResult markOrderPendingIfAccepted(Long orderId) {
+        Optional<OrderRequest> orderRequest = orderRequestsRepository.findById(orderId);
+        if(orderRequest.isPresent()){
+            orderRequest.get().setOrderStatus(BEING_PREPARED);
+            return new OrderRequestUpdateStatusResult(true,"Order Status Changed successfully!!!");
+        }
+        return new OrderRequestUpdateStatusResult(false,"Order Status Not Changed successfully!!!");
+    }
+
+    @Override
+    @Transactional
+    public OrderRequestUpdateStatusResult rejectOrder(Long orderId) {
+        Optional<OrderRequest> orderRequest = orderRequestsRepository.findById(orderId);
+        if(orderRequest.isPresent()){
+            orderRequest.get().setOrderStatus(OrderStatus.DECLINED);
+            return new OrderRequestUpdateStatusResult(true,"Order with Id: "+ orderId + " has been rejected");
+            //Also to add message to the user for the Reason why it was Declined
+        }
+        return new OrderRequestUpdateStatusResult(false,"Order Status Not Changed successfully!!!");
+    }
+
+    @Override
+    public List<OrderRequest> getActiveOrderRequests(List<Restaurant> restaurants) {
+        Long[] restaurant_ids = new Long[restaurants.size()];
+        List<OrderRequest> requestList = new ArrayList<>();
+
+        for(int i = 0; i < restaurants.size(); i++){
+            restaurant_ids[i] = restaurants.get(i).getRestId();
+        }
+
+        for(int i = 0; i < restaurants.size(); i++){
+            List<OrderRequest> requests = orderRequestsRepository.getOrderRequestByRestaurant_Id(restaurant_ids[i]);
+            for(OrderRequest orderRequest : requests){
+                if(orderRequest.getOrderStatus() != OrderStatus.PENDING && orderRequest.getOrderStatus() != OrderStatus.DECLINED){
+                    requestList.add(orderRequest);
+                }
+            }
+        }
+        return requestList;
+    }
+
+    @Override
+    public List<OrderRequest> getPendingOrderRequests(List<Restaurant> restaurants) {
+        Long[] restaurant_ids = new Long[restaurants.size()];
+        List<OrderRequest> requestList = new ArrayList<>();
+
+        for(int i = 0; i < restaurants.size(); i++){
+            restaurant_ids[i] = restaurants.get(i).getRestId();
+        }
+
+        for(int i = 0; i < restaurants.size(); i++){
+            List<OrderRequest> requests = orderRequestsRepository.getOrderRequestByRestaurant_Id(restaurant_ids[i]);
+            for(OrderRequest orderRequest : requests){
+                if(orderRequest.getOrderStatus() == OrderStatus.PENDING){
+                    requestList.add(orderRequest);
+                }
+            }
+        }
+        return requestList;
+    }
+
+    @Override
+    public List<OrderRequest> getDeclinedOrderRequests(List<Restaurant> restaurants) {
+        Long[] restaurant_ids = new Long[restaurants.size()];
+        List<OrderRequest> requestList = new ArrayList<>();
+
+        for(int i = 0; i < restaurants.size(); i++){
+            restaurant_ids[i] = restaurants.get(i).getRestId();
+        }
+
+        for(int i = 0; i < restaurants.size(); i++){
+            List<OrderRequest> requests = orderRequestsRepository.getOrderRequestByRestaurant_Id(restaurant_ids[i]);
+            for(OrderRequest orderRequest : requests){
+                if(orderRequest.getOrderStatus() == OrderStatus.DECLINED){
+                    requestList.add(orderRequest);
+                }
+            }
+        }
+        return requestList;
+    }
+
+    @Override
+    public OrderRequest getOrderRequestById(Long orderId) {
+        return orderRequestsRepository.findById(orderId).get();
+    }
+
+    @Override
+    public OrderStatus[] getOrderStatusForActiveOrders() {
+        OrderStatus[] statuses = {BEING_PREPARED, OrderStatus.ON_THE_WAY ,OrderStatus.COMPLETED};
+        return statuses;
+    }
+
+    @Override
+    @Transactional
+    public OrderRequestUpdateStatusResult updateOrderStatus(OrderRequest orderRequest,Long orderId) {
+        OrderStatus orderStatus = orderRequest.getOrderStatus();
+        OrderRequest order = orderRequestsRepository.findById(orderId).get();
+        if(order == null){
+            return new OrderRequestUpdateStatusResult(false,"Order Status Not Changed !!!");
+        }
+        order.setOrderStatus(orderStatus);
+        OrderRequest saved = orderRequestsRepository.save(order);
+        if(saved == null){
+            return new OrderRequestUpdateStatusResult(false,"Error From DB at saving!!!");
+        }
+        return new OrderRequestUpdateStatusResult(true,"Order Status Changed successfully!!!");
+    }
+
+    public OrderStatus getOrderStatuses(OrderStatus orderStatus){
+        List<OrderStatus> statuses = new ArrayList<>();
+        if(orderStatus == OrderStatus.PENDING){
+            return OrderStatus.BEING_PREPARED;
+        }
+        else if(orderStatus == BEING_PREPARED){
+            return OrderStatus.ON_THE_WAY;
+        }
+        else{
+            return OrderStatus.COMPLETED;
+        }
     }
 }

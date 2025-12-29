@@ -28,7 +28,6 @@ public class RestaurantController {
         @GetMapping("/restaurant")
         public String restaurant(Model model, @AuthenticationPrincipal PersonDetails loggedInOwner){
             List<Restaurant> restaurant =  restaurantService.getRestaurantByPersonId(loggedInOwner.getPersonId());
-
             model.addAttribute("res",restaurant);
             return  "restaurant";
         }
