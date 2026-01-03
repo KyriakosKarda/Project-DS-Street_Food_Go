@@ -39,7 +39,7 @@ public class Person {
     private List<Restaurant> restaurants;
 
 
-    @OneToMany(mappedBy = "person_order")
+    @OneToMany(mappedBy = "person")
     private List<OrderRequest> orders;
 
 

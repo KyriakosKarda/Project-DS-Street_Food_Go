@@ -5,9 +5,10 @@
       layout:decorate="~{page_layout/layout}">
 <head>
     <meta charset="UTF-8">
-    <title>Catalog Of Orders</title>
+    <title>Active Orders</title>
 </head>
 <section layout:fragment="main-content">
+    <h1>Your Pending Orders</h1>
     <div class="row justify-content-center">
         <table class="table">
             <thead>
@@ -19,7 +20,6 @@
                 <th>Full Name Of The Customer</th>
                 <th>Address</th>
                 <th>List of Products</th>
-                <th>Action</th>
             </tr>
             </thead>
             <tbody>
@@ -39,10 +39,6 @@
                             </div>
                         </li>
                     </ol>
-                </td>
-                <td>
-                    <span><a th:href="@{'/order/restaurant/'+${order.getOrder_id()}+'/accept' }" class="btn btn-success">Accept Order</a></span>
-                    <span><a th:href="@{'/order/restaurant/'+${order.getOrder_id()}+'/reject/message' }" class="btn btn-danger">Reject Order</a></span>
                 </td>
             </tr>
             </tbody>

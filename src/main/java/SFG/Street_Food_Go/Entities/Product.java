@@ -22,6 +22,9 @@ public class Product {
     @Column
     private Double price;
 
+    @Column(columnDefinition = "boolean default true")
+    private Boolean available = true;
+
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "Id_res_fk")
     private Restaurant restaurant;
@@ -31,7 +34,7 @@ public class Product {
 
 
 
-    public Product() {}
+    public Product() {this.available = true;}
     public Product(Integer id, String name, String description, Double price) {
         this.id = id;
         this.name = name;
@@ -77,6 +80,14 @@ public class Product {
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
+    }
+
+    public Boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Boolean available) {
+        this.available = available;
     }
 
     @Override

@@ -17,5 +17,6 @@
         <a th:href="@{/order/restaurant}" class="btn btn-outline-info">🛵 Edit Your Orders</a>
         <a th:href="@{/menu}" class="btn btn-outline-info">🍽️ Edit Your Menu</a>
     </div>
+    <div th:if="${success} != null" class="alert alert-success" th:text="${success}"></div>
 </section>
 </html>

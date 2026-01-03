@@ -82,44 +82,4 @@ public class CartController {
         System.out.println(validation.getReason());
         return "selection_menu";
     }
-
-    @GetMapping("/viewOrder/{rest_id}")
-    public String viewOrder(@PathVariable Long rest_id, Model model,@ModelAttribute("OrderSelectionProductsDTO") OrderSelectionProductsDTO selected_order_details){
-        //Get Only The selected itms if its selected == true.
-        List<SelectedProducts> selectedItems = orderProcessService.handleSelectionOfProducts(selected_order_details);
-
-        //Gets the prod_id of the selected items
-        //To add then in business logic
-        Integer[] allProductIdsChosen = new Integer[selectedItems.size()];
-        for (int i = 0; i < selectedItems.size(); i++) {
-            allProductIdsChosen[i] = selectedItems.get(i).getProductId();
-        }
-        //Get All products according to prod_id we stored in the array
-        List<Product> products = orderProcessService.getProductsProvided(allProductIdsChosen);
-
-        List<OrderToViewDTO> orderView = orderProcessService.orderView(products,selectedItems);
-
-        OrderSubmissionFormWrapper orderSubmissionFormWrapper = new  OrderSubmissionFormWrapper();
-        orderSubmissionFormWrapper.setProducts(orderView);
-
-        model.addAttribute("orderView",orderView);
-        model.addAttribute("products",orderSubmissionFormWrapper);
-        model.addAttribute("rest_id",rest_id);
-        model.addAttribute("total_price",orderProcessService.getTotalPriceOfTheOrder(orderView));
-        return "finalize_order";
-    }
-
-    //here to add Post mapping from /viewOrder/{rest_id}
-    @PostMapping("/viewOrder/{rest_id}")
-    public String finalizeOrder(@PathVariable Long rest_id, Model model,
-                                @AuthenticationPrincipal PersonDetails loggedInUser,
-                                @ModelAttribute("orderForm") OrderSubmissionFormWrapper orderForm){
-        System.out.println("person_id: "+loggedInUser.getPersonId());
-        PlaceOrderResult result = orderProcessService.saveOrder(rest_id,loggedInUser,orderForm);
-        if(result.isCreated()) {
-            return "redirect:/orders?"+result.getMessage();
-        }
-        model.addAttribute("error",result.getMessage());
-        return "redirect:/viewOrder/"+rest_id;
-    }
 }

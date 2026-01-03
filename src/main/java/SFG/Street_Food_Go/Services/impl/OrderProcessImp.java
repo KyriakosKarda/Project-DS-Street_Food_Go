@@ -3,6 +3,7 @@ package SFG.Street_Food_Go.Services.impl;
 import SFG.Street_Food_Go.Entities.*;
 import SFG.Street_Food_Go.Repository.OrderPlacementRepository;
 import SFG.Street_Food_Go.Repository.OrderRequestsRepository;
+import SFG.Street_Food_Go.Services.DTO.RejectOrderMessageDTO;
 import SFG.Street_Food_Go.Services.DTO.SelectedProducts;
 import SFG.Street_Food_Go.Repository.ProductRepository;
 import SFG.Street_Food_Go.Services.OrderProcessService;
@@ -204,10 +205,11 @@ public class OrderProcessImp implements OrderProcessService {
 
     @Override
     @Transactional
-    public OrderRequestUpdateStatusResult rejectOrder(Long orderId) {
+    public OrderRequestUpdateStatusResult rejectOrder(Long orderId, RejectOrderMessageDTO orderMessageDTO) {
         Optional<OrderRequest> orderRequest = orderRequestsRepository.findById(orderId);
         if(orderRequest.isPresent()){
             orderRequest.get().setOrderStatus(OrderStatus.DECLINED);
+            orderRequest.get().setRejectReason(orderMessageDTO.getMessage());
             return new OrderRequestUpdateStatusResult(true,"Order with Id: "+ orderId + " has been rejected");
             //Also to add message to the user for the Reason why it was Declined
         }
@@ -312,5 +314,41 @@ public class OrderProcessImp implements OrderProcessService {
         else{
             return OrderStatus.COMPLETED;
         }
+    }
+
+    @Override
+    public List<OrderRequest> getActiveOrderRequestByPersonId(Long personId) {
+        List<OrderRequest> orderRequests = orderRequestsRepository.findByPersonId(personId);
+        List<OrderRequest> activeOrderRequests = new ArrayList<>();
+        for(OrderRequest orderRequest : orderRequests){
+            if(orderRequest.getOrderStatus() == OrderStatus.BEING_PREPARED || orderRequest.getOrderStatus() == OrderStatus.ON_THE_WAY){
+                activeOrderRequests.add(orderRequest);
+            }
+        }
+        return activeOrderRequests;
+    }
+
+    @Override
+    public List<OrderRequest> getPendingOrderRequestByPersonId(Long personId) {
+        List<OrderRequest> orderRequests = orderRequestsRepository.findByPersonId(personId);
+        List<OrderRequest> activeOrderRequests = new ArrayList<>();
+        for(OrderRequest orderRequest : orderRequests){
+            if(orderRequest.getOrderStatus() == OrderStatus.PENDING){
+                activeOrderRequests.add(orderRequest);
+            }
+        }
+        return activeOrderRequests;
+    }
+
+    @Override
+    public List<OrderRequest> getRejectedOrderRequestByPersonId(Long personId) {
+        List<OrderRequest> orderRequests = orderRequestsRepository.findByPersonId(personId);
+        List<OrderRequest> activeOrderRequests = new ArrayList<>();
+        for(OrderRequest orderRequest : orderRequests){
+            if(orderRequest.getOrderStatus() == OrderStatus.DECLINED){
+                activeOrderRequests.add(orderRequest);
+            }
+        }
+        return activeOrderRequests;
     }
 }

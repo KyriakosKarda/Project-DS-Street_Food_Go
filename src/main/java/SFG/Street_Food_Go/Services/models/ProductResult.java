@@ -2,11 +2,11 @@ package SFG.Street_Food_Go.Services.models;
 
 public class ProductResult {
     private boolean created;
-    private String errorMessage;
+    private String reason;
 
-    public ProductResult(boolean created, String errorMessage) {
+    public ProductResult(boolean created, String reason) {
         this.created = created;
-        this.errorMessage = errorMessage;
+        this.reason = reason;
     }
 
     public static ProductResult failure(boolean created,String errorMessage){
@@ -21,11 +21,11 @@ public class ProductResult {
         this.created = created;
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public String getReason() {
+        return reason;
     }
 
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

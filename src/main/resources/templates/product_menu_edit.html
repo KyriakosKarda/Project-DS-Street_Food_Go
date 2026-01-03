@@ -16,6 +16,7 @@
                 <th>Product Name</th>
                 <th>Product Description</th>
                 <th>Product Price</th>
+                <th>Is Product Available</th>
                 <th>Edit</th>
             </tr>
         </thead>
@@ -23,7 +24,8 @@
             <tr th:each="product : ${products}">
                 <td th:text="${product.getName()}"></td>
                 <td th:text="${product.getDescription()}"></td>
-                <td th:text="${product.getPrice()}"></td>
+                <td th:text="${product.getPrice()+ ' €'}"></td>
+                <td style="font-size: large" th:text="${product.getAvailable()}"></td>
                 <td> <a th:href="@{'/product/edit/'+ ${product.getId()} + '/' + ${rest_id}}" class="btn btn-outline-danger">Click Here To Edit</a></td>
             </tr>
         </tbody>

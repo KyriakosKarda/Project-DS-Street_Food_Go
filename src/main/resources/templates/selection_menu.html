@@ -25,18 +25,20 @@
         <tbody>
 <!--Thymeleaf Syntax for Iterating though a list => https://stackoverflow.com/questions/54480070/binding-list-in-thymeleaf-index-out-of-bounds-->
         <tr th:each="menuItem, i : ${products}">
-            <div sec:authorize="hasRole('CUSTOMER')">
-                <td>
-                    <input type="checkbox" th:field="*{selections[__${i.index}__].selected}">
-                    <input type="hidden" th:field="*{selections[__${i.index}__].productId}">
-                </td>
-            </div>
-            <td th:text="${menuItem.getName()}"></td>
-            <td th:text="${menuItem.getDescription()}"></td>
-            <td th:text="${menuItem.getPrice()} + ' €'"></td>
-            <td th:text="${menuItem.getRestaurant().getRestName()}"></td>
-            <div sec:authorize="hasRole('CUSTOMER')">
-                <td><input type="number" min="0" max="10" th:field="*{selections[__${i.index}__].quantity}"></td>
+            <div th:if="${menuItem.getAvailable()}">
+                <div sec:authorize="hasRole('CUSTOMER')">
+                    <td>
+                        <input type="checkbox" th:field="*{selections[__${i.index}__].selected}">
+                        <input type="hidden" th:field="*{selections[__${i.index}__].productId}">
+                    </td>
+                </div>
+                <td th:text="${menuItem.getName()}"></td>
+                <td th:text="${menuItem.getDescription()}"></td>
+                <td th:text="${menuItem.getPrice()} + ' €'"></td>
+                <td th:text="${menuItem.getRestaurant().getRestName()}"></td>
+                <div sec:authorize="hasRole('CUSTOMER')">
+                    <td><input type="number" min="0" max="10" th:field="*{selections[__${i.index}__].quantity}"></td>
+                </div>
             </div>
         </tr>
         </tbody>

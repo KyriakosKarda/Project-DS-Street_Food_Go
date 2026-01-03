@@ -1,6 +1,7 @@
 package SFG.Street_Food_Go.Services;
 
 import SFG.Street_Food_Go.Entities.*;
+import SFG.Street_Food_Go.Services.DTO.RejectOrderMessageDTO;
 import SFG.Street_Food_Go.Services.DTO.SelectedProducts;
 import SFG.Street_Food_Go.Services.DTO.OrderSelectionProductsDTO;
 import SFG.Street_Food_Go.Services.DTO.OrderToViewDTO;
@@ -9,6 +10,7 @@ import SFG.Street_Food_Go.Services.models.OrderRequestUpdateStatusResult;
 import SFG.Street_Food_Go.Services.models.PersonDetails;
 import SFG.Street_Food_Go.Services.models.PlaceOrderResult;
 import SFG.Street_Food_Go.Services.models.SelectProductDTO_Validation;
+import org.hibernate.query.Order;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +38,7 @@ public interface OrderProcessService {
 
     OrderRequestUpdateStatusResult markOrderPendingIfAccepted(Long orderId);
 
-    OrderRequestUpdateStatusResult rejectOrder(Long orderId);
+    OrderRequestUpdateStatusResult rejectOrder(Long orderId, RejectOrderMessageDTO rejectOrderMessageDTO);
 
     List<OrderRequest> getActiveOrderRequests(List<Restaurant> restaurants);
 
@@ -51,4 +53,10 @@ public interface OrderProcessService {
     OrderRequestUpdateStatusResult updateOrderStatus(OrderRequest orderRequest,Long orderId);
 
     OrderStatus getOrderStatuses(OrderStatus orderStatus);
+
+    List<OrderRequest> getActiveOrderRequestByPersonId(Long personId);
+
+    List<OrderRequest> getPendingOrderRequestByPersonId(Long personId);
+
+    List<OrderRequest> getRejectedOrderRequestByPersonId(Long personId);
 }

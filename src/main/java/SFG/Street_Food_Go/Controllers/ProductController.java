@@ -2,6 +2,8 @@ package SFG.Street_Food_Go.Controllers;
 
 
 import SFG.Street_Food_Go.Entities.Product;
+import SFG.Street_Food_Go.Entities.Restaurant;
+import SFG.Street_Food_Go.Services.PersonService;
 import SFG.Street_Food_Go.Services.ProductService;
 import SFG.Street_Food_Go.Services.RestaurantService;
 import SFG.Street_Food_Go.Services.models.PersonDetails;
@@ -19,31 +21,36 @@ public class ProductController {
 
     private ProductService productService;
     private RestaurantService restaurantService;
-    public ProductController(ProductService productService, RestaurantService restaurantService) {
+    private PersonService personService;
+
+    public ProductController(ProductService productService, RestaurantService restaurantService,PersonService personService) {
         this.productService = productService;
         this.restaurantService = restaurantService;
+        this.personService = personService;
     }
 
 
-    @GetMapping("/product/new")
-    public String product(Model model){
-        Product p1 = new Product();
-        model.addAttribute("p1",p1);
-        model.addAttribute("restaurants",restaurantService.getRestaurants());
+    @GetMapping("/product/{rest_id}")
+    public String product(Model model,@PathVariable Long rest_id){
+        Restaurant restaurant = restaurantService.getRestaurantById(rest_id);
+        Product p = new Product();
+        p.setRestaurant(restaurant);
+        model.addAttribute("product",p);
         return "new_product";
     }
 
 
     @PostMapping("/product/new")
-    public String product(Model model,@ModelAttribute("p1") Product p1){
-        System.out.println(p1);
+    public String product(Model model,@ModelAttribute Product p1,@AuthenticationPrincipal PersonDetails loggedUser){
+        System.out.println(p1.getRestaurant());
         ProductResult result = productService.createProduct(p1);
         if(result.isCreated()){
-            return "redirect:/";
+            model.addAttribute("success",result.getReason());
+            model.addAttribute("person",personService.getPersonById(loggedUser.getPersonId()));
+            return "owner_dashboard";
         }
-        model.addAttribute("products",productService.getAllProducts());
-        model.addAttribute("restaurants",restaurantService.getRestaurants());
-        model.addAttribute("error",result.getErrorMessage());
+        model.addAttribute("error",result.getReason());
+        model.addAttribute("product",p1);
         return "new_product";
     }
 
@@ -64,7 +71,7 @@ public class ProductController {
         }
         model.addAttribute("product",product);
         model.addAttribute("rest_id",rest_id);
-        model.addAttribute("error",productResult.getErrorMessage());
+        model.addAttribute("error",productResult.getReason());
         return "redirect:/product/edit/"+prod_id+'/'+rest_id;
     }
 }

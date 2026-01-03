@@ -112,6 +112,25 @@ td {
     padding: .75rem 1.25rem;
     font-weight: 700;
 }
+textarea {
+    width: 420px;
+    min-height: 110px;
+    padding: 12px;
+    background: #333;
+    color: #fff;
+    border: 1px solid #666;
+    border-radius: 6px;
+}
+
+textarea::placeholder {
+    color: #ffc107;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #4da3ff;
+}
+
 
 
 /*

@@ -10,5 +10,5 @@ import java.util.List;
 public interface OrderRequestsRepository extends JpaRepository<OrderRequest, Long> {
     List<OrderRequest> getOrderRequestByRestaurant_Id(Long restaurantId);
 
-
+    List<OrderRequest> findByPersonId(Long personId);
 }

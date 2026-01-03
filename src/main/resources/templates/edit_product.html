@@ -27,6 +27,15 @@
             <input type="text" id="price" class="form-control" th:field="*{price}"  required>
         </div>
 
+        <div class="form-group">
+            <label for="available">Is Product Available</label>
+            <select id="available" name="available" class="form-control" th:field="*{available}" required>
+                <option disabled selected value="">--- Choose Me ---</option>
+                <option th:value="false">Not Available</option>
+                <option th:value="true">Available</option>
+            </select>
+        </div>
+
         <input type="hidden" th:field="*{restaurant}">
         <div class="form-group" th:if="${error != null}">
             <p style="color: red" th:text="${error}"></p>

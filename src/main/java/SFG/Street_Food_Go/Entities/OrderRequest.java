@@ -22,6 +22,9 @@ public class OrderRequest {
     @Column
     private LocalDateTime order_Created_Time;
 
+    @Column
+    private String rejectReason;
+
 
     @ManyToOne
     @JoinColumn(name = "rest_id_fk")
@@ -29,7 +32,7 @@ public class OrderRequest {
 
     @ManyToOne
     @JoinColumn(name = "person_id_fk")
-    private Person person_order;
+    private Person person;
 
     @OneToMany(mappedBy = "order_request",cascade = CascadeType.ALL)
     private List<OrderPlacement> order_placement = new ArrayList<>();
@@ -61,11 +64,11 @@ public class OrderRequest {
     }
 
     public Person getPerson_order() {
-        return person_order;
+        return person;
     }
 
     public void setPerson_order(Person person_order) {
-        this.person_order = person_order;
+        this.person = person_order;
     }
 
     public List<OrderPlacement> getOrder_placement() {
@@ -84,6 +87,14 @@ public class OrderRequest {
         this.order_Created_Time = order_Created_Time;
     }
 
+    public String getRejectReason() {
+        return rejectReason;
+    }
+
+    public void setRejectReason(String rejectReason) {
+        this.rejectReason = rejectReason;
+    }
+
     @Override
     public String toString() {
         return "OrderRequest{" +
@@ -91,7 +102,7 @@ public class OrderRequest {
                 ", orderStatus=" + orderStatus +
                 ", order_Created_Time=" + order_Created_Time +
                 ", restaurant=" + restaurant +
-                ", person_order=" + person_order +
+                ", person_order=" + person +
                 ", order_placement=" + order_placement +
                 '}';
     }

@@ -7,6 +7,7 @@ import SFG.Street_Food_Go.Entities.OrderStatus;
 import SFG.Street_Food_Go.Entities.Restaurant;
 import SFG.Street_Food_Go.Repository.OrderPlacementRepository;
 import SFG.Street_Food_Go.Repository.OrderRequestsRepository;
+import SFG.Street_Food_Go.Services.DTO.RejectOrderMessageDTO;
 import SFG.Street_Food_Go.Services.OrderProcessService;
 import SFG.Street_Food_Go.Services.RestaurantService;
 import SFG.Street_Food_Go.Services.models.OrderRequestUpdateStatusResult;
@@ -54,7 +55,7 @@ public class OrderController {
     }
 
     @GetMapping("/order/restaurant/rejected")
-    public String activeOrder(Model model, @AuthenticationPrincipal PersonDetails user) {
+    public String rejectedOrder(Model model, @AuthenticationPrincipal PersonDetails user) {
         List<Restaurant> restaurants = restaurantService.getRestaurantByPersonId(user.getPersonId());
         List<OrderRequest> rejected_orders = orderProcessService.getDeclinedOrderRequests(restaurants);
         model.addAttribute("orders", rejected_orders);
@@ -73,9 +74,21 @@ public class OrderController {
         return  "order_dashboard";
     }
 
-    @GetMapping("/order/restaurant/{order_id}/reject")
-    public String rejectOrder(Model model, @PathVariable Long order_id){
-        OrderRequestUpdateStatusResult orderRequestUpdateStatusResult = orderProcessService.rejectOrder(order_id);
+    @GetMapping("/order/restaurant/{order_id}/reject/message")
+    public String rejectOrderMessage(Model model, @PathVariable Long order_id){
+        OrderRequest order = orderProcessService.getOrderRequestById(order_id);
+        RejectOrderMessageDTO dto = new RejectOrderMessageDTO();
+        dto.setId_of_order(order_id);
+        model.addAttribute("order", order);
+        model.addAttribute("order_id",order_id);
+        model.addAttribute("rejectOrderMessageDTO",dto);
+        return "order_reject_message";
+    }
+
+    @PostMapping("/order/restaurant/{order_id}/reject/message")
+    public String rejectOrderMessage(Model model,@PathVariable Long order_id,@ModelAttribute RejectOrderMessageDTO rejectOrderMessageDTO){
+        OrderRequestUpdateStatusResult orderRequestUpdateStatusResult = orderProcessService.rejectOrder(order_id,rejectOrderMessageDTO);
+        System.out.println(rejectOrderMessageDTO.getMessage() + ' '+ rejectOrderMessageDTO.getId_of_order());
         if(orderRequestUpdateStatusResult.isUpdated()) {
             model.addAttribute("success", orderRequestUpdateStatusResult.getReason());
         }
@@ -105,4 +118,6 @@ public class OrderController {
         }
         return "order_dashboard";
     }
+
+
 }

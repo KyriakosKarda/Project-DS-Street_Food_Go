@@ -19,6 +19,7 @@
                 <th>Full Name Of The Customer</th>
                 <th>Address</th>
                 <th>List of Products</th>
+                <th>Reason Of Decline</th>
             </tr>
             </thead>
             <tbody>
@@ -39,6 +40,7 @@
                         </li>
                     </ol>
                 </td>
+                <td th:text="${order.getRejectReason()}" style="font-size: large;color: red"></td>
             </tr>
             </tbody>
         </table>

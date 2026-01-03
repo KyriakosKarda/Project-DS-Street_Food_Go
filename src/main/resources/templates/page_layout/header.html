@@ -15,10 +15,11 @@
         <nav class="nav nav-masthead justify-content-center">
             <a class="nav-link active" href="/">Home</a>
             <a sec:authorize="hasRole('CUSTOMER') or isAnonymous()" class="nav-link active" href="/restaurants">Available Restaurants</a>
+            <a sec:authorize="hasRole('CUSTOMER')" class="nav-link active" href="/customer_dashboard">View Your Orders</a>
             <a sec:authorize="!isAuthenticated()" class="nav-link active" href="/login">Login</a>
             <a sec:authorize="!isAuthenticated()" class="nav-link active" href="/register">Register</a>
             <a sec:authorize="hasRole('OWNER')" class="nav-link active" href="/restaurant">My Restaurants</a>
-            <a sec:authorize="hasRole('OWNER')" class="nav-link active" href="/menu">Edit My Menu</a>
+            <a sec:authorize="hasRole('OWNER')" class="nav-link active" href="/menu">Edit Your Menu</a>
             <a sec:authorize="hasRole('OWNER')" class="nav-link active" href="/order/restaurant">Edit Your Orders</a>
             <a sec:authorize="hasRole('OWNER')" class="nav-link active" href="/dashboard">Dashboard</a>
             <a sec:authorize="isAuthenticated()" class="nav-link">

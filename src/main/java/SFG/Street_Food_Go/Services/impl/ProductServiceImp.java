@@ -6,7 +6,6 @@ import SFG.Street_Food_Go.Repository.ProductRepository;
 import SFG.Street_Food_Go.Repository.RestaurantRepository;
 import SFG.Street_Food_Go.Services.ProductService;
 import SFG.Street_Food_Go.Services.models.ProductResult;
-import ognl.NumericExpression;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +24,6 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public ProductResult createProduct(Product product) {
-        System.out.println("test");
         ProductResult res = isPriceValid(product.getPrice().toString());
         if(!res.isCreated()){
             return res;
@@ -34,7 +32,7 @@ public class ProductServiceImp implements ProductService {
         if(p == null){
             return new ProductResult(false,"Unexpected Error At creating Product");
         }
-        return new ProductResult(true,null);
+        return new ProductResult(true,"Successfully Created Product");
     }
 
     @Override
@@ -55,6 +53,7 @@ public class ProductServiceImp implements ProductService {
             System.out.println(restaurant.getRestId());
             Product p = productRepository.getProductById(prod_id);
 
+            p.setAvailable(formProduct.getAvailable());
             p.setDescription(formProduct.getDescription());
             p.setPrice(formProduct.getPrice());
             p.setName(formProduct.getName());
@@ -64,7 +63,7 @@ public class ProductServiceImp implements ProductService {
 
             return new ProductResult(true,null);
         }
-        return new ProductResult(false,productResult.getErrorMessage());
+        return new ProductResult(false,productResult.getReason());
     }
 
 

@@ -20,10 +20,11 @@
         </thead>
         <tbody>
         <tr th:each="res : ${res}">
-            <div th:if="${res.isOpen()} ">
-                <td> <a class="btn btn-primary btn-danger" th:href="@{'/menu/' + ${res.getRestId()}}">Edit Menu</a></td>
+            <span>
+                <td><a class="btn btn-primary btn-primary" th:href="@{'/menu/' + ${res.getRestId()}}">Edit Menu</a>
+                <br><br><a class="btn btn-primary btn-primary" th:href="@{'/product/' + ${res.getRestId()}}">Add New Products</a></td>
+            </span>
                 <td> <h3 th:text="${res.getRestName()}"></h3></td>
-            </div>
         </tr>
         </tbody>
     </table>

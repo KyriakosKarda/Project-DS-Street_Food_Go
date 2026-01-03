@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Reject Message</title>
+</head>
+<section layout:fragment="main-content">
+    <div class="row justify-content-center" th:object="${order}">
+        <h3>Enter The Reason You Reject The Following Order. Customer Will Also Get Notified.</h3><br>
+        <form th:action="@{'/order/restaurant/'+ ${order_id} +'/reject/message'}" th:object="${rejectOrderMessageDTO}" method="POST">
+            <table class="table">
+                  <thead>
+                  <tr>
+                      <th>#Order Id</th>
+                      <th>Name Of The Restaurant</th>
+                      <th>Status Of The Order</th>
+                      <th>Date Issued</th>
+                      <th>Full Name Of The Customer</th>
+                      <th>Address</th>
+                      <th>List of Products</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                      <td th:text="${order.getOrder_id()}"></td>
+
+                      <td th:text="${order.getRestaurant().getRestName()}"></td>
+                      <td th:text="${order.getOrderStatus()}"></td>
+                      <td th:text="${order.getOrder_Created_Time()}"></td>
+                      <td th:text="${order.getPerson_order().getName() + ' ' + order.getPerson_order().getSurname()}"></td>
+                      <td th:text="${order.getPerson_order().getAddress()}"></td>
+                      <td>
+                          <ol>
+                              <li th:each="op,i : ${order.order_placement}">
+                                  <div th:if="${op.getProduct()} != null">
+                                      <span th:text="${op.getQuantity()}"></span>X
+                                      <span th:text="${op.getProduct().getName()}"></span>
+                                  </div>
+                              </li>
+                          </ol>
+                      </td>
+                      </tr>
+                  </tbody>
+              </table>
+              <label>
+                <textarea style="width: 400px;height: 200px" th:field="*{message}" placeholder="Enter The Reason You Rejected The Order"></textarea>
+              </label><br><br><br>
+            <button type="submit" class="btn btn-primary">Reject Order</button>
+        </form>
+    </div>
+</section>
+</html>
