@@ -26,12 +26,6 @@ public class RestaurantServiceImp implements RestaurantService {
     }
 
     @Override
-    public Restaurant createRestaurant(Restaurant restaurant) {
-        /// TODO REMOVE NULL
-        return null;
-    }
-
-    @Override
     public Restaurant getRestaurantById(Long id) {
         return restaurantRepository.getRestaurantById(id);
     }

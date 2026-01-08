@@ -2,9 +2,14 @@ package SFG.Street_Food_Go.Services.impl;
 
 import SFG.Street_Food_Go.Entities.Person;
 import SFG.Street_Food_Go.Entities.PersonType;
+import SFG.Street_Food_Go.Port.PhoneNumberService;
+import SFG.Street_Food_Go.Port.SmsNotificationPort;
+import SFG.Street_Food_Go.Port.impl.model.PhoneNumberValidationResult;
 import SFG.Street_Food_Go.Repository.PersonRepository;
 import SFG.Street_Food_Go.Services.PersonService;
 import SFG.Street_Food_Go.Services.models.PersonResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,10 +19,18 @@ import java.util.List;
 @Service
 public class PersonServiceImpl implements PersonService {
     private PersonRepository personRepository;
-
-
+    private final SmsNotificationPort smsNotificationPort;
     private PasswordEncoder passwordEncoder;
-    public PersonServiceImpl(PersonRepository personRepository,PasswordEncoder passwordEncoder ){this.personRepository = personRepository; this.passwordEncoder = passwordEncoder;}
+    private PhoneNumberService phoneNumberService;
+    public PersonServiceImpl(PersonRepository personRepository,
+                             PasswordEncoder passwordEncoder,
+                             SmsNotificationPort smsNotificationPort,
+                             PhoneNumberService phoneNumberService) {
+        this.personRepository = personRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.smsNotificationPort = smsNotificationPort;
+        this.phoneNumberService = phoneNumberService;
+    }
 
     @Override
     public List<Person> getAllPersons() {
@@ -64,8 +77,11 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public PersonResult createPerson(Person person) {
-        if(usernameExists(person) && emailExists(person)){
-            return new PersonResult(false, "Username/Email already exists Change then To something else");
+        if(usernameExists(person)){
+            return new PersonResult(false, "Username already exists.Change To something else");
+        }
+        if(emailExists(person)){
+            return new PersonResult(false, "Email Address already exists.Change To something else");
         }
         /*
           Check If The user Provided street NO in his address
@@ -75,16 +91,29 @@ public class PersonServiceImpl implements PersonService {
             return new PersonResult(false, "Address[ '"+  givenAddress+ "' ] "+ "is not valid. You Should Add Both Name and Number Of The Address");
         }
 
+        /*
+        If phone number exists. Checking it by calling an external service.
+         */
+        PhoneNumberValidationResult result = phoneNumberService.validatePhoneNumber(person.getPhoneNumber());
+        if(!result.valid()){
+            return new PersonResult(false, "Only digits are allowed. Maximum length is 10 digits.");
+        }
+
+        person.setPhoneNumber(result.e164());
 
         String raw_pass = person.getPasswordHash();
         person.setPasswordHash(passwordEncoder.encode(raw_pass));
-        System.err.println("Before encode: " + raw_pass);
-        System.err.println("After encode: " + person.getPasswordHash());
         /*
         Here Also to add the push notific after person saved
          */
         Person personSaved = personRepository.save(person);
         if (personSaved != null) {
+            String content = String.format("You have successfully registered for StreetFoodGo app.To Login Use Your First Name(%s) And Your Password.", personSaved.getName());
+            try {
+                this.smsNotificationPort.sendSms(personSaved.getPhoneNumber(), content);
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
             return new PersonResult(true, null);
         }
         return new PersonResult(false, "Unexpected Error");
@@ -109,5 +138,12 @@ public class PersonServiceImpl implements PersonService {
         }
         System.out.println(hasNumbers + " " + hasLetters);
         return hasNumbers && hasLetters;
+    }
+
+    private static boolean isValidPhoneNumber(String phoneNumber){
+        if(!phoneNumber.startsWith("+30")){
+            return false;
+        }
+        return true;
     }
 }

@@ -4,10 +4,13 @@ import SFG.Street_Food_Go.Entities.Product;
 import SFG.Street_Food_Go.Entities.Restaurant;
 import SFG.Street_Food_Go.Repository.ProductRepository;
 import SFG.Street_Food_Go.Repository.RestaurantRepository;
+import SFG.Street_Food_Go.Services.DTO.OrderSelectionProductsDTO;
+import SFG.Street_Food_Go.Services.DTO.SelectedProducts;
 import SFG.Street_Food_Go.Services.ProductService;
 import SFG.Street_Food_Go.Services.models.ProductResult;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -78,6 +81,19 @@ public class ProductServiceImp implements ProductService {
             return new ProductResult(false,"Price MUST ONLY be a Number.");
         }
         return new ProductResult(true,null);
+    }
+
+
+    public static OrderSelectionProductsDTO buildOrderSelectionForm(List<Product> products){
+        OrderSelectionProductsDTO form = new OrderSelectionProductsDTO();
+
+        List<SelectedProducts> selectionsList = new ArrayList<>();
+        for (Product p : products) {
+            selectionsList.add(new SelectedProducts(p.getId()));
+        }
+
+        form.setSelections(selectionsList);
+        return form;
     }
 
 }

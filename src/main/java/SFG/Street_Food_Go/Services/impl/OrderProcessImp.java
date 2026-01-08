@@ -1,6 +1,7 @@
 package SFG.Street_Food_Go.Services.impl;
 
 import SFG.Street_Food_Go.Entities.*;
+import SFG.Street_Food_Go.Port.SmsNotificationPort;
 import SFG.Street_Food_Go.Repository.OrderPlacementRepository;
 import SFG.Street_Food_Go.Repository.OrderRequestsRepository;
 import SFG.Street_Food_Go.Services.DTO.RejectOrderMessageDTO;
@@ -36,8 +37,9 @@ public class OrderProcessImp implements OrderProcessService {
     private RestaurantService restaurantService;
     private OrderRequestsRepository orderRequestsRepository;
     private OrderPlacementRepository orderPlacementRepository;
+    private final SmsNotificationPort smsNotificationPort;
 
-    public OrderProcessImp(ProductRepository productRepository, PersonService personService, OrderRequestsRepository orderRequestsRepository, OrderPlacementRepository orderPlacementRepository,ProductService productService,RestaurantService restaurantService)
+    public OrderProcessImp(ProductRepository productRepository, PersonService personService, OrderRequestsRepository orderRequestsRepository, OrderPlacementRepository orderPlacementRepository,ProductService productService,RestaurantService restaurantService,SmsNotificationPort smsNotificationPort)
     {
         this.productRepository = productRepository;
         this.personService = personService;
@@ -45,6 +47,7 @@ public class OrderProcessImp implements OrderProcessService {
         this.orderPlacementRepository = orderPlacementRepository;
         this.productService = productService;
         this.restaurantService = restaurantService;
+        this.smsNotificationPort = smsNotificationPort;
     }
 
     @Override
@@ -128,8 +131,6 @@ public class OrderProcessImp implements OrderProcessService {
         Long person_id = loggedInUser.getPersonId();
 
         OrderRequest orderRequest = new OrderRequest();
-        // we have to chamge it to PENDING but once we enter this value we get an erro from db
-        // since we added this attribute to the Enum class after we created the db..
         orderRequest.setOrderStatus(OrderStatus.PENDING);
 
         orderRequest.setPerson_order(personService.getPersonById(person_id)); //who ordered
@@ -154,42 +155,16 @@ public class OrderProcessImp implements OrderProcessService {
         }
         OrderRequest saved = orderRequestsRepository.save(orderRequest);
         if(saved != null){
+            String content = String.format("Your Order Has Been Placed Successfully!. With And Id of: (#%d)",saved.getOrder_id());
+            try {
+                Person person = personService.getPersonById(person_id);
+                this.smsNotificationPort.sendSms(person.getPhoneNumber(), content);
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
             return new PlaceOrderResult(true,"Order has been saved successfully");
         }
         return new PlaceOrderResult(false,"Order has NOT been saved.Unexpected Error");
-    }
-
-    @Override
-    public List<OrderRequest> getAllOrderRequests() {
-        return orderRequestsRepository.findAll();
-    }
-
-    @Override
-    public List<OrderPlacement> getAllOrderPlacements() {
-        return orderPlacementRepository.findAll();
-    }
-
-    @Override
-    public List<OrderRequest> getAllOrderRequestsByRestaurant(List<Restaurant> restaurants) {
-        Long[] restaurant_ids = new Long[restaurants.size()];
-        List<OrderRequest> requestList = new ArrayList<>();
-
-        for(int i = 0; i < restaurants.size(); i++){
-            restaurant_ids[i] = restaurants.get(i).getRestId();
-        }
-
-        for(int i = 0; i < restaurants.size(); i++){
-            List<OrderRequest> requests = orderRequestsRepository.getOrderRequestByRestaurant_Id(restaurant_ids[i]);
-            for(OrderRequest orderRequest : requests){
-                requestList.add(orderRequest);
-            }
-        }
-        int x = 0;
-        for(OrderRequest list : requestList){
-            x++;
-        }
-        System.out.println("count: " + x);
-        return requestList;
     }
 
     @Override
@@ -197,6 +172,14 @@ public class OrderProcessImp implements OrderProcessService {
     public OrderRequestUpdateStatusResult markOrderPendingIfAccepted(Long orderId) {
         Optional<OrderRequest> orderRequest = orderRequestsRepository.findById(orderId);
         if(orderRequest.isPresent()){
+            String content = "Your Order Has been Accepted!!";
+            try {
+                Long person_id = orderRequest.get().getPerson_order().getId();
+                Person person = personService.getPersonById(person_id);
+                this.smsNotificationPort.sendSms(person.getPhoneNumber(), content);
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
             orderRequest.get().setOrderStatus(BEING_PREPARED);
             return new OrderRequestUpdateStatusResult(true,"Order Status Changed successfully!!!");
         }
@@ -208,10 +191,19 @@ public class OrderProcessImp implements OrderProcessService {
     public OrderRequestUpdateStatusResult rejectOrder(Long orderId, RejectOrderMessageDTO orderMessageDTO) {
         Optional<OrderRequest> orderRequest = orderRequestsRepository.findById(orderId);
         if(orderRequest.isPresent()){
+            String content = "Your Order Has been Declined" + " the reason was: { " + orderMessageDTO.getMessage() + " }";
+            try {
+                Long person_id = orderRequest.get().getPerson_order().getId();
+                Person person = personService.getPersonById(person_id);
+                this.smsNotificationPort.sendSms(person.getPhoneNumber(), content);
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
+
             orderRequest.get().setOrderStatus(OrderStatus.DECLINED);
             orderRequest.get().setRejectReason(orderMessageDTO.getMessage());
+
             return new OrderRequestUpdateStatusResult(true,"Order with Id: "+ orderId + " has been rejected");
-            //Also to add message to the user for the Reason why it was Declined
         }
         return new OrderRequestUpdateStatusResult(false,"Order Status Not Changed successfully!!!");
     }
@@ -282,12 +274,6 @@ public class OrderProcessImp implements OrderProcessService {
     }
 
     @Override
-    public OrderStatus[] getOrderStatusForActiveOrders() {
-        OrderStatus[] statuses = {BEING_PREPARED, OrderStatus.ON_THE_WAY ,OrderStatus.COMPLETED};
-        return statuses;
-    }
-
-    @Override
     @Transactional
     public OrderRequestUpdateStatusResult updateOrderStatus(OrderRequest orderRequest,Long orderId) {
         OrderStatus orderStatus = orderRequest.getOrderStatus();
@@ -299,6 +285,14 @@ public class OrderProcessImp implements OrderProcessService {
         OrderRequest saved = orderRequestsRepository.save(order);
         if(saved == null){
             return new OrderRequestUpdateStatusResult(false,"Error From DB at saving!!!");
+        }
+        String content = "Your Order Status Changed To: '" + saved.getOrderStatus() + "' ";
+        try {
+            Long person_id = orderRequest.getPerson_order().getId();
+            Person person = personService.getPersonById(person_id);
+            this.smsNotificationPort.sendSms(person.getPhoneNumber(), content);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
         return new OrderRequestUpdateStatusResult(true,"Order Status Changed successfully!!!");
     }

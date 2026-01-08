@@ -22,6 +22,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
+import static SFG.Street_Food_Go.Services.impl.ProductServiceImp.buildOrderSelectionForm;
+
 @Controller
 public class CartController {
     private RestaurantService  restaurantService;
@@ -38,24 +40,9 @@ public class CartController {
     //add of this logic to be added in the services
     @GetMapping("/menu/{rest_id}/cart")
     public String showMenu(@PathVariable Long rest_id, Model model){
-        Restaurant restaurant = restaurantService.getRestaurantById(rest_id);
-        System.out.println(restaurant.toString());
-
         List<Product> products = productService.findByRestaurant_Id(rest_id);
 
-        //Model Wrapper So we dont have issues when we assign values to the field
-        // also only supports
-        OrderSelectionProductsDTO form = new OrderSelectionProductsDTO();
-
-        //Init As the number of the products in DB
-        List<SelectedProducts> selectionsList = new ArrayList<>();
-        for (Product p : products) {
-            selectionsList.add(new SelectedProducts(p.getId()));
-        }
-
-        //DTO for remembering User's Input
-        form.setSelections(selectionsList);
-
+        OrderSelectionProductsDTO form = buildOrderSelectionForm(products);
         model.addAttribute("OrderDTO",form);
         model.addAttribute("products",products);
         model.addAttribute("rest_id",String.valueOf(rest_id));

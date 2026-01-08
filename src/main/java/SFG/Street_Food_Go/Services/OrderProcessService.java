@@ -30,12 +30,6 @@ public interface OrderProcessService {
 
     PlaceOrderResult saveOrder(Long rest_id, PersonDetails loggedInUser, OrderSubmissionFormWrapper orderForm);
 
-    List<OrderRequest> getAllOrderRequests();
-
-    List<OrderPlacement> getAllOrderPlacements();
-
-    List<OrderRequest> getAllOrderRequestsByRestaurant(List<Restaurant> restaurants);
-
     OrderRequestUpdateStatusResult markOrderPendingIfAccepted(Long orderId);
 
     OrderRequestUpdateStatusResult rejectOrder(Long orderId, RejectOrderMessageDTO rejectOrderMessageDTO);
@@ -47,8 +41,6 @@ public interface OrderProcessService {
     List<OrderRequest> getDeclinedOrderRequests(List<Restaurant> restaurants);
 
     OrderRequest getOrderRequestById(Long orderId);
-
-    OrderStatus[] getOrderStatusForActiveOrders();
 
     OrderRequestUpdateStatusResult updateOrderStatus(OrderRequest orderRequest,Long orderId);
 
