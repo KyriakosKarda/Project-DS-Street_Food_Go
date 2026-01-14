@@ -33,5 +33,4 @@ public class RestaurantRestController {
     public RestaurantDTO getRestaurant(@PathVariable Long rest_id) {
         return restaurantMapper.restaurantToRestaurantDTO(restaurantService.getRestaurantById(rest_id));
     }
-
 }

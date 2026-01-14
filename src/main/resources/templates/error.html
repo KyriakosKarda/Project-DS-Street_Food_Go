@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page_layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>ErrorPage</title>
+</head>
+<section layout:fragment="main-content">
+    <div class="error-wrapper">
+        <h1 class="text-danger" th:text="${errorCode}"></h1><br>
+        <h1 class="text-danger" th:text="${errorMessage}"></h1><br><br>
+        <a class="btn btn-primary" href="/">Go Back To Main Menu</a>
+    </div>
+</section>
+</html>
