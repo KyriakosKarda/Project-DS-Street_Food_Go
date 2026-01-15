@@ -1,0 +1,35 @@
+---
+- hosts: app-server
+  become: yes
+  tasks:
+      - name: Install Java
+        apt:
+          name: openjdk-21-jdk
+          state: present
+          update_cache: yes
+      - name: Get Project From Github
+        git:
+          repo: "{{ env.spring_app_repo }}"
+          dest: "{{ env.spring_app_dest }}"
+          version: "{{ env.spring_app_version }}"
+          force: yes
+
+      - name : Change Permissions of the mvnw file
+        file:
+          path: "{{ env.spring_app_dest }}/DS-Lab-NOC/mvnw"
+          mode: '0777'
+
+      - name: Generate Jar For Noc External service
+        become: yes
+        shell:
+          "cd {{ env.spring_app_dest }}/DS-Lab-NOC && bash ./mvnw clean package -DskipTests"
+          
+      - name: Activate Noc service with jar
+        become: yes
+        shell:
+          "cd {{ env.spring_app_dest }}/DS-Lab-NOC/target && nohup java -jar noc-0.0.1-SNAPSHOT.jar 2>&1 &"
+        register: noc_service.exitcode
+      
+      - name: Run Docker Compose for Spring app
+        shell:
+          

@@ -1,0 +1,4 @@
+env:
+  spring_app_repo: "https://github.com/KyriakosKarda/Project-DS-Street_Food_Go.git"
+  spring_app_dest: "/home/ubuntu/spring_app"
+  spring_app_version: "main"
