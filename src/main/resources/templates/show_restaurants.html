@@ -37,5 +37,8 @@
         </tr>
         </tbody>
     </table>
+    <div th:if="${ #lists.isEmpty(res)}">
+        <p style="color:red;font-size: x-large">No Available Restaurants Found Just Yet.</p>
+    </div>
 </section>
 </html>
