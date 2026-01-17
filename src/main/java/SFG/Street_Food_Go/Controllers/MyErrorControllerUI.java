@@ -3,6 +3,7 @@ package SFG.Street_Food_Go.Controllers;
 import SFG.Street_Food_Go.Services.DTO.ErrorStatusCodeResultDTO;
 import SFG.Street_Food_Go.Services.HandleErrorPage;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,8 +16,8 @@ public class MyErrorControllerUI implements ErrorController {
     public MyErrorControllerUI(HandleErrorPage handleErrorPage) {this.handleErrorPage = handleErrorPage;}
     @RequestMapping("/error")
     public String handleError(HttpServletRequest request, Model model) {
+        if(request == null) {System.out.println("request is null");}
         ErrorStatusCodeResultDTO result = handleErrorPage.getErrorStatusCode(request);
-
         model.addAttribute("errorCode",result.getStatusCode());
         model.addAttribute("errorMessage",result.getErrorMessage());
         return "error";

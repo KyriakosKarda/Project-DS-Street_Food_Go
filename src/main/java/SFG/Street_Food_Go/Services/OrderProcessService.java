@@ -51,4 +51,6 @@ public interface OrderProcessService {
     List<OrderRequest> getPendingOrderRequestByPersonId(Long personId);
 
     List<OrderRequest> getRejectedOrderRequestByPersonId(Long personId);
+
+    boolean orderExistsById(Long orderId);
 }

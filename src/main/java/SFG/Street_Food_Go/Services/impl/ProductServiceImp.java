@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImp implements ProductService {
@@ -67,6 +68,15 @@ public class ProductServiceImp implements ProductService {
             return new ProductResult(true,null);
         }
         return new ProductResult(false,productResult.getReason());
+    }
+
+    @Override
+    public boolean productExistsById(Integer id) {
+        Optional<Product> p = productRepository.findById(id);
+        if(p.isPresent()){
+            return true;
+        }
+        return false;
     }
 
 

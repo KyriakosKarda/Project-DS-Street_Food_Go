@@ -1,6 +1,8 @@
 package SFG.Street_Food_Go.Rest.DTO;
 
-public class RestaurantDTO {
+import SFG.Street_Food_Go.Services.DTO.PathVariableInvalidDTO;
+
+public class RestaurantDTO  extends PathVariableInvalidDTO {
     private Long id;
     private String name;
     private String address;

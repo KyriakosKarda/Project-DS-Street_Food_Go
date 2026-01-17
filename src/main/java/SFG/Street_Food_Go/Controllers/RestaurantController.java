@@ -33,6 +33,10 @@ public class RestaurantController {
 
         @GetMapping("/restaurant/{rest_id}")
         public String restaurant(Model model, @PathVariable Long rest_id, @AuthenticationPrincipal PersonDetails loggedInOwner){
+            boolean result  = restaurantService.RestaurantIdExist(rest_id);
+            if (!result) {
+                return "redirect:/error";
+            }
             Restaurant restaurant =  restaurantService.getRestaurantById(rest_id);
             model.addAttribute("res",restaurant);
             model.addAttribute("rest_id",rest_id);
@@ -41,6 +45,10 @@ public class RestaurantController {
 
         @PostMapping("/restaurant/{rest_id}")
         public String restaurantUpdateForm(Model model, @PathVariable Long rest_id, @AuthenticationPrincipal PersonDetails loggedInOwner, @ModelAttribute Restaurant restaurant){
+            boolean res  = restaurantService.RestaurantIdExist(rest_id);
+            if (!res) {
+                return "redirect:/error";
+            }
             RestaurantResult result = restaurantService.updateRestaurantDetails(restaurant);
             if(!result.isCreated()){
                 model.addAttribute("res",restaurant);

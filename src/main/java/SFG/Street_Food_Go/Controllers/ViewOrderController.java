@@ -6,6 +6,7 @@ import SFG.Street_Food_Go.Services.DTO.OrderSelectionProductsDTO;
 import SFG.Street_Food_Go.Services.DTO.OrderToViewDTO;
 import SFG.Street_Food_Go.Services.DTO.SelectedProducts;
 import SFG.Street_Food_Go.Services.OrderProcessService;
+import SFG.Street_Food_Go.Services.PersonService;
 import SFG.Street_Food_Go.Services.ProductService;
 import SFG.Street_Food_Go.Services.RestaurantService;
 import SFG.Street_Food_Go.Services.Wrappers.OrderSubmissionFormWrapper;
@@ -26,16 +27,22 @@ public class ViewOrderController {
     private RestaurantService restaurantService;
     private ProductService productService;
     private OrderProcessService orderProcessService;
+    private PersonService personService;
 
 
-    public ViewOrderController(RestaurantService restaurantService, ProductService productService, OrderProcessService orderProcessService) {
+    public ViewOrderController(RestaurantService restaurantService, ProductService productService, OrderProcessService orderProcessService,PersonService personService) {
         this.restaurantService = restaurantService;
         this.productService = productService;
         this.orderProcessService = orderProcessService;
+        this.personService = personService;
     }
 
     @GetMapping("/viewOrder/{rest_id}")
     public String viewOrder(@PathVariable Long rest_id, Model model, @ModelAttribute("OrderSelectionProductsDTO") OrderSelectionProductsDTO selected_order_details){
+        boolean result  = restaurantService.RestaurantIdExist(rest_id);
+        if (!result) {
+            return "redirect:/error";
+        }
         //Get Only The selected itms if its selected == true.
         List<SelectedProducts> selectedItems = orderProcessService.handleSelectionOfProducts(selected_order_details);
 
@@ -64,7 +71,10 @@ public class ViewOrderController {
     public String finalizeOrder(@PathVariable Long rest_id, Model model,
                                 @AuthenticationPrincipal PersonDetails loggedInUser,
                                 @ModelAttribute("orderForm") OrderSubmissionFormWrapper orderForm){
-        System.out.println("person_id: "+loggedInUser.getPersonId());
+        boolean res  = restaurantService.RestaurantIdExist(rest_id);
+        if (!res) {
+            return "redirect:/error";
+        }
         PlaceOrderResult result = orderProcessService.saveOrder(rest_id,loggedInUser,orderForm);
         if(result.isCreated()) {
             model.addAttribute("success",result.getMessage());
@@ -83,6 +93,10 @@ public class ViewOrderController {
 
     @GetMapping("/viewOrder/{person_id}/active")
     public String viewOrderActive(@PathVariable Long person_id, Model model){
+        boolean result  = personService.personExistsById(person_id);
+        if (!result) {
+            return "redirect:/error";
+        }
         List<OrderRequest> orderRequests = orderProcessService.getActiveOrderRequestByPersonId(person_id);
         System.out.println("orderRequests: "+orderRequests.size());
         model.addAttribute("orders",orderRequests);
@@ -91,6 +105,10 @@ public class ViewOrderController {
 
     @GetMapping("/viewOrder/{person_id}/pending")
     public String viewOrderPending(@PathVariable Long person_id, Model model){
+        boolean result  = personService.personExistsById(person_id);
+        if (!result) {
+            return "redirect:/error";
+        }
         List<OrderRequest> orderRequests = orderProcessService.getPendingOrderRequestByPersonId(person_id);
         System.out.println("orderRequests: "+orderRequests.size());
         model.addAttribute("orders",orderRequests);
@@ -99,6 +117,10 @@ public class ViewOrderController {
 
     @GetMapping("/viewOrder/{person_id}/rejected")
     public String viewOrderRejected(@PathVariable Long person_id, Model model){
+        boolean result  = personService.personExistsById(person_id);
+        if (!result) {
+            return "redirect:/error";
+        }
         List<OrderRequest> orderRequests = orderProcessService.getRejectedOrderRequestByPersonId(person_id);
         System.out.println("orderRequests: "+orderRequests.size());
         model.addAttribute("orders",orderRequests);

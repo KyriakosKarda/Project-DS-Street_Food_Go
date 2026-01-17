@@ -15,16 +15,21 @@ public class HandleErrorPageImpl implements HandleErrorPage {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         if(status != null) {
             Integer statusCode = Integer.valueOf(status.toString());
-            if(statusCode == HttpStatus.NOT_FOUND.value()) {
+            if(statusCode.equals(HttpStatus.NOT_FOUND.value())) {
                 return new ErrorStatusCodeResultDTO(statusCode, "Resource Not Found!!!");
             }
-            else if(statusCode == HttpStatus.FORBIDDEN.value()) {
+            else if(statusCode.equals(HttpStatus.FORBIDDEN.value())) {
                 return new ErrorStatusCodeResultDTO(statusCode, "No permissions!!!");
             }
-            else if(statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
+            else if(statusCode.equals(HttpStatus.INTERNAL_SERVER_ERROR.value())) {
                 return new ErrorStatusCodeResultDTO(statusCode, "Server Error!!!");
             }
         }
-        return new ErrorStatusCodeResultDTO(HttpStatus.NOT_FOUND.value(), "Unexpected Error!!!");
+        return new ErrorStatusCodeResultDTO(HttpStatus.NOT_FOUND.value(), "Not Found!!!");
+    }
+
+    @Override
+    public ErrorStatusCodeResultDTO getErrorStatusCode(String errorMessage) {
+        return new ErrorStatusCodeResultDTO(HttpStatus.NOT_FOUND.value(), errorMessage);
     }
 }

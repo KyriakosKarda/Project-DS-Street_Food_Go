@@ -21,4 +21,5 @@ public interface ProductService{
 
     ProductResult updateProduct(Product product,Long rest_id,Integer prod_id);
 
+    boolean productExistsById(Integer id);
 }

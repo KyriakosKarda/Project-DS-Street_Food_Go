@@ -345,4 +345,13 @@ public class OrderProcessImp implements OrderProcessService {
         }
         return activeOrderRequests;
     }
+
+    @Override
+    public boolean orderExistsById(Long orderId) {
+        Optional<OrderRequest> order = orderRequestsRepository.findById(orderId);
+        if(order.isPresent()){
+            return true;
+        }
+        return false;
+    }
 }

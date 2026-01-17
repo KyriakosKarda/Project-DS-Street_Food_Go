@@ -64,6 +64,10 @@ public class OrderController {
 
     @GetMapping("/order/restaurant/{order_id}/accept")
     public String acceptOrder(Model model, @PathVariable Long order_id) {
+        boolean result  = orderProcessService.orderExistsById(order_id);
+        if (!result) {
+            return "redirect:/error";
+        }
         OrderRequestUpdateStatusResult orderRequestUpdateStatusResult = orderProcessService.markOrderPendingIfAccepted(order_id);
         if(orderRequestUpdateStatusResult.isUpdated()) {
             model.addAttribute("success", orderRequestUpdateStatusResult.getReason());
@@ -76,6 +80,10 @@ public class OrderController {
 
     @GetMapping("/order/restaurant/{order_id}/reject/message")
     public String rejectOrderMessage(Model model, @PathVariable Long order_id){
+        boolean result  = orderProcessService.orderExistsById(order_id);
+        if (!result) {
+            return "redirect:/error";
+        }
         OrderRequest order = orderProcessService.getOrderRequestById(order_id);
         RejectOrderMessageDTO dto = new RejectOrderMessageDTO();
         dto.setId_of_order(order_id);
@@ -87,6 +95,10 @@ public class OrderController {
 
     @PostMapping("/order/restaurant/{order_id}/reject/message")
     public String rejectOrderMessage(Model model,@PathVariable Long order_id,@ModelAttribute RejectOrderMessageDTO rejectOrderMessageDTO){
+        boolean result  = orderProcessService.orderExistsById(order_id);
+        if (!result) {
+            return "redirect:/error";
+        }
         OrderRequestUpdateStatusResult orderRequestUpdateStatusResult = orderProcessService.rejectOrder(order_id,rejectOrderMessageDTO);
         System.out.println(rejectOrderMessageDTO.getMessage() + ' '+ rejectOrderMessageDTO.getId_of_order());
         if(orderRequestUpdateStatusResult.isUpdated()) {
@@ -100,6 +112,10 @@ public class OrderController {
 
     @GetMapping("/order/restaurant/{order_id}/update")
     public String updateActiveOrder(Model model, @PathVariable Long order_id) {
+        boolean result  = orderProcessService.orderExistsById(order_id);
+        if (!result) {
+            return "redirect:/error";
+        }
         OrderRequest order = orderProcessService.getOrderRequestById(order_id);
         OrderStatus status = orderProcessService.getOrderStatuses(order.getOrderStatus());
         model.addAttribute("order", order);
@@ -110,6 +126,10 @@ public class OrderController {
 
     @PostMapping("/order/restaurant/{order_id}/update")
     public String handleUpdateActiveOrder(Model model, @AuthenticationPrincipal PersonDetails user, @PathVariable Long order_id, @ModelAttribute OrderRequest updatedOrder) {
+        boolean res  = orderProcessService.orderExistsById(order_id);
+        if (!res) {
+            return "redirect:/error";
+        }
         OrderRequestUpdateStatusResult result = orderProcessService.updateOrderStatus(updatedOrder, order_id);
         if(!result.isUpdated()){
             model.addAttribute("failure", result.getReason());

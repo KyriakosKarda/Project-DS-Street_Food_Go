@@ -32,6 +32,10 @@ public class ProductController {
 
     @GetMapping("/product/{rest_id}")
     public String product(Model model,@PathVariable Long rest_id){
+        boolean result  = restaurantService.RestaurantIdExist(rest_id);
+        if (!result) {
+            return "redirect:/error";
+        }
         Restaurant restaurant = restaurantService.getRestaurantById(rest_id);
         Product p = new Product();
         p.setRestaurant(restaurant);
@@ -57,6 +61,14 @@ public class ProductController {
 
     @GetMapping("/product/edit/{prod_id}/{rest_id}")
     public String editTest(Model model,@PathVariable Integer prod_id,@AuthenticationPrincipal PersonDetails personDetails,@PathVariable Long rest_id){
+        boolean result  = restaurantService.RestaurantIdExist(rest_id);
+        if (!result) {
+            return "redirect:/error";
+        }
+        boolean res = productService.productExistsById(prod_id);
+        if (!res) {
+            return "redirect:/error";
+        }
         Product product = productService.getProductById(prod_id);
         model.addAttribute("product",product);
         model.addAttribute("rest_id",rest_id);
@@ -65,6 +77,14 @@ public class ProductController {
 
     @PostMapping("/product/edit/{prod_id}/{rest_id}")
     public String handleEditedProduct(Model model,@PathVariable Integer prod_id,@ModelAttribute Product product,@PathVariable Long rest_id){
+        boolean result  = restaurantService.RestaurantIdExist(rest_id);
+        if (!result) {
+            return "redirect:/error";
+        }
+        boolean res = productService.productExistsById(prod_id);
+        if (!res) {
+            return "redirect:/error";
+        }
         ProductResult productResult = productService.updateProduct(product,rest_id,prod_id);
         if(productResult.isCreated()){
             return "redirect:/menu/"+rest_id;

@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PersonServiceImpl implements PersonService {
@@ -51,6 +52,15 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Person getPersonById(Long id) {
         return personRepository.getPersonById(id);
+    }
+
+    @Override
+    public boolean personExistsById(Long id) {
+        Optional<Person> person = personRepository.findById(id);
+        if(person.isPresent()) {
+            return true;
+        }
+        return false;
     }
 
     private boolean usernameExists(Person person){

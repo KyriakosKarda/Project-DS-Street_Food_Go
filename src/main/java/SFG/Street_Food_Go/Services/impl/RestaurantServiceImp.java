@@ -55,4 +55,13 @@ public class RestaurantServiceImp implements RestaurantService {
         }
         return new RestaurantResult(true,"Unexpected Error");
     }
+
+    @Override
+    public boolean RestaurantIdExist(Long id) {
+        Restaurant restaurant = getRestaurantById(id);
+        if(restaurant != null){
+            return true;
+        }
+        return false;
+    }
 }

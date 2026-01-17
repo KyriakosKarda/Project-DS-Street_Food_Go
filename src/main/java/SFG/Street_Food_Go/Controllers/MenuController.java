@@ -32,6 +32,10 @@ public class MenuController {
 
     @GetMapping("/menu/{rest_id}")
     public String menu(Model model, @AuthenticationPrincipal PersonDetails personDetails, @PathVariable Long rest_id){
+        boolean result  = restaurantService.RestaurantIdExist(rest_id);
+        if (!result) {
+            return "redirect:/error";
+        }
         Restaurant res = restaurantService.getRestaurantById(rest_id);
         List<Product> products = productService.findByRestaurant_Id(rest_id);
 

@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers("/restaurant/**").hasRole("OWNER")
                         .requestMatchers("/dashboard").hasRole("OWNER")
                         //APIs
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui.html","/swagger-ui/**").permitAll()
                         .requestMatchers("/api/v1/auth/client-tokens").permitAll()
                         .requestMatchers("/api/v1/register").permitAll()
                         .requestMatchers("/api/v1/auth/test-secure").authenticated()

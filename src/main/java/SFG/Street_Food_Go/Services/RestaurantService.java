@@ -17,4 +17,5 @@ public interface RestaurantService {
 
     RestaurantResult updateRestaurantDetails(Restaurant restaurant);
 
+    boolean RestaurantIdExist(Long id);
 }

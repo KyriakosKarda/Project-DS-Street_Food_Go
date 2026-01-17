@@ -6,4 +6,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface HandleErrorPage {
     ErrorStatusCodeResultDTO getErrorStatusCode(HttpServletRequest request);
+
+    ErrorStatusCodeResultDTO getErrorStatusCode(String errorMessage);
 }
