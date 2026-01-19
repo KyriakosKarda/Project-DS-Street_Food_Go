@@ -1,4 +1,7 @@
 services:
+  noc:
+    ports:
+      - ""
   db:
     image: postgres:16
     ports:
