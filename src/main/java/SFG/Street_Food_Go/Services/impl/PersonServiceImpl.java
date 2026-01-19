@@ -121,6 +121,7 @@ public class PersonServiceImpl implements PersonService {
             String content = String.format("You have successfully registered for StreetFoodGo app.To Login Use Your First Name(%s) And Your Password.", personSaved.getName());
             try {
                 this.smsNotificationPort.sendSms(personSaved.getPhoneNumber(), content);
+                System.err.println("HEREEEEEEEEEEEEEEEEEEEEEEE");
             } catch (Exception e) {
                 System.err.println(e.getMessage());
             }
