@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: pass123
       POSTGRES_DB: mydb
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U dbuser"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -34,5 +34,11 @@ services:
       interval: 15s
       timeout: 5s
       retries: 5
+  service-noc:
+    build:
+      context: ./DS-Lab-NOC
+      dockerfile: NOC-Dockerfile.Dockerfile
+    ports:
+      - "8081:8081"
 volumes:
   db_data:
