@@ -40,7 +40,7 @@ public class OpenApiConfig {
     public GroupedOpenApi groupedOpenApi() {
         return GroupedOpenApi.builder()
                 .group("api")
-                .packagesToScan("SFG.Street_Food_Go.Rest")
+                .packagesToScan("SFG.Street_Food_Go")
                 .pathsToMatch("/api/v1/**")
                 .build();
     }
