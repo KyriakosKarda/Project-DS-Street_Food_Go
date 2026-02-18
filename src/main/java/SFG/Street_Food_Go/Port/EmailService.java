@@ -9,7 +9,7 @@ public class EmailService {
 
     private JavaMailSender mailSender;
 
-    public void setMailSender(JavaMailSender mailSender) {this.mailSender = mailSender;}
+    public EmailService(JavaMailSender mailSender) {this.mailSender = mailSender;}
 
     public void sendEmail(String to, String username) {
         SimpleMailMessage message = new SimpleMailMessage();
