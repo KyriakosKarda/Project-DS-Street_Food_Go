@@ -40,5 +40,10 @@ services:
       dockerfile: NOC-Dockerfile.Dockerfile
     ports:
       - "8081:8081"
+  mail-hog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
 volumes:
   db_data:

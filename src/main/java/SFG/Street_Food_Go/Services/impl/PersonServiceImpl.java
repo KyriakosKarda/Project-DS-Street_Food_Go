@@ -2,6 +2,7 @@ package SFG.Street_Food_Go.Services.impl;
 
 import SFG.Street_Food_Go.Entities.Person;
 import SFG.Street_Food_Go.Entities.PersonType;
+import SFG.Street_Food_Go.Port.EmailService;
 import SFG.Street_Food_Go.Port.PhoneNumberService;
 import SFG.Street_Food_Go.Port.SmsNotificationPort;
 import SFG.Street_Food_Go.Port.impl.model.PhoneNumberValidationResult;
@@ -23,14 +24,17 @@ public class PersonServiceImpl implements PersonService {
     private final SmsNotificationPort smsNotificationPort;
     private PasswordEncoder passwordEncoder;
     private PhoneNumberService phoneNumberService;
+    private EmailService emailService;
     public PersonServiceImpl(PersonRepository personRepository,
                              PasswordEncoder passwordEncoder,
                              SmsNotificationPort smsNotificationPort,
-                             PhoneNumberService phoneNumberService) {
+                             PhoneNumberService phoneNumberService,
+                             EmailService emailService) {
         this.personRepository = personRepository;
         this.passwordEncoder = passwordEncoder;
         this.smsNotificationPort = smsNotificationPort;
         this.phoneNumberService = phoneNumberService;
+        this.emailService = emailService;
     }
 
     @Override
@@ -119,6 +123,7 @@ public class PersonServiceImpl implements PersonService {
         Person personSaved = personRepository.save(person);
         if (personSaved != null) {
             String content = String.format("You have successfully registered for StreetFoodGo app.To Login Use Your First Name(%s) And Your Password.", personSaved.getName());
+            emailService.sendEmail(personSaved.getEmailAddress(), person.getName() + ' ' +person.getSurname());
             try {
                 this.smsNotificationPort.sendSms(personSaved.getPhoneNumber(), content);
                 System.err.println("HEREEEEEEEEEEEEEEEEEEEEEEE");
