@@ -49,12 +49,12 @@ echo \
 sudo apt-get update
 
 
-install
+# install
 
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 
-No sudo docker run
+# No sudo docker run
 
 sudo groupadd docker
 sudo usermod -aG docker $USER
