@@ -15,10 +15,7 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
   spring-app:
-    image: spring-app-image:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: docker pull ghcr.io/kyriakoskarda/project-ds-street_food_go:fe4b59a-10
     ports:
       - "8080:8080"
     depends_on:
