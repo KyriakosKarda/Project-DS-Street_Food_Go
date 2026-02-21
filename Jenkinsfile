@@ -33,10 +33,10 @@ pipeline {
                 '''
             }
         }
-        stage('Deploy App To Vm'){
-            steps{
+        // stage('Deploy App To Vm'){
+        //     steps{
 
-            }
-        }
+        //     }
+        // }
     }
 }
