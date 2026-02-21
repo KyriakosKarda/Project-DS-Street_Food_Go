@@ -5,11 +5,10 @@ pipeline {
         DOCKER_TOKEN = credentials('git-ssh-token')
         DOCKER_USER = 'KyriakosKarda'
         DOCKER_SERVER = 'ghcr.io'
-        DOCKER_PREFIX = 'ghcr.io/KyriakosKarda/project-ds-street_food_go'
+        DOCKER_PREFIX = 'ghcr.io/kyriakoskarda/project-ds-street_food_go'
     }
 
     stages {
-
         stage('Test') {
             steps {
                 sh '''
