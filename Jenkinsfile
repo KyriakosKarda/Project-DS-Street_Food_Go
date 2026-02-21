@@ -33,10 +33,22 @@ pipeline {
                 '''
             }
         }
-        // stage('Deploy App To Vm'){
-        //     steps{
+        stage('Deploy App To VM') {
+            steps {
+                dir('deploy_to_vm') {
+                    git credentialsId: 'git-pKey', 
+                        url: 'git@github.com:KyriakosKarda/Ansible-Deployment-DevOps.git'
 
-        //     }
-        // }
+                    withCredentials([
+                        string(credentialsId: 'git-ssh-token', variable: 'GHCR_TOKEN')
+                    ]) {
+                        sh '''
+                        ansible-playbook -i hosts.yml 
+                        playbooks/spring.yml
+                        '''
+                    }
+                }
+            }
+        }
     }
 }
