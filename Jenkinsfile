@@ -24,6 +24,7 @@ pipeline {
                     HEAD_COMMIT=$(git rev-parse --short HEAD)
                     TAG=$HEAD_COMMIT-$BUILD_ID
                     docker build --rm -t $DOCKER_PREFIX:$TAG .
+                    echo $TAG > .tag
                 '''
 
                 sh '''
@@ -32,6 +33,10 @@ pipeline {
                 '''
             }
         }
+        stage('Deploy App To Vm'){
+            steps{
 
+            }
+        }
     }
 }
