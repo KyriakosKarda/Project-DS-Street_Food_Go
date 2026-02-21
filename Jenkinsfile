@@ -36,7 +36,8 @@ pipeline {
         stage('Deploy App To VM') {
             steps {
                 dir('deploy_to_vm') {
-                    git credentialsId: 'git-pKey', 
+                    git branch: 'main',
+                        credentialsId: 'git-private-key', 
                         url: 'git@github.com:KyriakosKarda/Ansible-Deployment-DevOps.git'
 
                     withCredentials([
