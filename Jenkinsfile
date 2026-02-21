@@ -2,10 +2,10 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_TOKEN = credentials('git')
+        DOCKER_TOKEN = credentials('git-ssh-token')
         DOCKER_USER = 'KyriakosKarda'
         DOCKER_SERVER = 'ghcr.io'
-        DOCKER_PREFIX = 'ghcr.io/KyriakosKarda/Project-DS-Street_Food_Go'
+        DOCKER_PREFIX = 'ghcr.io/KyriakosKarda/project-ds-street_food_go'
     }
 
     stages {
