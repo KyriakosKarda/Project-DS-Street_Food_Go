@@ -44,8 +44,8 @@ pipeline {
                         string(credentialsId: 'git-ssh-token', variable: 'GHCR_TOKEN')
                     ]) {
                         sh '''
-                        ansible-playbook -i hosts.yml 
-                        playbooks/spring.yml
+                        ansible-playbook -i deploy_to_vm/hosts.yml 
+                        deploy_to_vm/playbooks/spring.yml
                         '''
                     }
                 }
