@@ -9,4 +9,4 @@ jobs:
 
     steps:
       - name: Testing Print Message
-        run: echo "Test Message!!!!!!!!!!!!!!!!!!!!"
+        run: echo "Test Message!!!!!!!!!!!!!!!!!!!! ${{ secrets.SSH_KEY }}"
