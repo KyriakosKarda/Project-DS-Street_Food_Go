@@ -1,0 +1,12 @@
+name: Test Workflow
+on:
+  push:
+    branches:
+      - main
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Testing Print Message
+        run: echo "Test Message!!!!!!!!!!!!!!!!!!!!"
