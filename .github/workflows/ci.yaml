@@ -17,9 +17,6 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: check pwd
-        run: echo "pwd"
-
       - name: build image
         run: "docker build -t street-food-go .."
       - name: push image to ghcr.io packages
