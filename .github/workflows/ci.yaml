@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - main
+permissions:
+  contents: read
+  packages: write
 jobs:
   test:
     runs-on: ubuntu-22.04
@@ -21,6 +24,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: build image
-        run: "docker build -t street-food-go ."
+        run: "docker build -t ghcr.io/${{ vars.USERNAME }}/street-food-go:${{ github.sha }} ."
       - name: push image to ghcr.io packages
-        run: "docker push ghcr.io/${{ vars.username }}/street-food-go:${{ github.sha }}"
+        run: "docker push ghcr.io/${{ vars.USERNAME }}/street-food-go:${{ github.sha }}"
