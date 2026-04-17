@@ -18,6 +18,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: build image
-        run: "docker build ghcr.io/${{ github.repository_owner }}/street-food-go:${{ github.sha }} ."
+        run: "docker build -t street-food-go ."
       - name: push image to ghcr.io packages
         run: "docker push ghcr.io/${{ github.repository_owner }}/street-food-go:${{ github.sha }}"
