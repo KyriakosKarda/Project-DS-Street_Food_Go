@@ -6,7 +6,18 @@ on:
 jobs:
   test:
     runs-on: ubuntu-22.04
-
     steps:
-      - name: Testing Print Message
-        run: echo "Test Message!!!!!!!!!!!!!!!!!!!! ${{ secrets.SSH_KEY }}"
+      - name: Print Message
+        run: echo "Implementing CI at ${{ github.repository_owner }} repo"
+
+      - name: login to ghcr.io to push image
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: build image
+        run: "docker build ghcr.io/${{ github.repository_owner }}/street-food-go:${{ github.sha }} ."
+      - name: push image to ghcr.io packages
+        run: "docker push ghcr.io/${{ github.repository_owner }}/street-food-go:${{ github.sha }}"
